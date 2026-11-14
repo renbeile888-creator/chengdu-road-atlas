@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>从成都出发 · 山海自驾图谱</title>
+<meta name="description" content="以成都为起点，143 条自驾路线：里程、车程、高速过路费、电费、门票、海拔、最佳季节，以及每个目的地的未来 10 日天气（meteoblue）。九类风光，八卷各 15 条，户外徒步卷另收 23 条经典步道。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar" id="top">
+  <div class="topbar__in">
+    <a class="brand" href="#top">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="28" height="28"><path d="M2 24 L10 12 L15 19 L20 9 L30 24 Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="25" cy="7" r="2.4" fill="currentColor"/></svg>
+      </span>
+      <span class="brand__txt">
+        <strong>从成都出发</strong>
+        <em>CHENGDU ROAD ATLAS</em>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#atlas">目的地</a>
+      <a href="#radial">距离图</a>
+      <a href="#weather-board">天气</a>
+      <a href="#about">说明</a>
+    </nav>
+    <div class="topbar__meta">
+      <span class="dot" id="freshDot"></span>
+      <span id="dataStamp">数据加载中</span>
+    </div>
+  </div>
+</header>
+
+<!-- 数据过期提示（仅在天气数据不是今天时出现） -->
+<div class="stale-bar" id="staleBar" hidden>
+  <div class="stale-bar__in">
+    <span class="stale-bar__icon" aria-hidden="true">!</span>
+    <p class="stale-bar__txt"><b id="staleTitle">天气数据已过期</b><span id="staleDesc"></span></p>
+    <button class="stale-bar__x" id="staleClose" aria-label="关闭提示">
+      <svg viewBox="0 0 24 24" width="14" height="14"><path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero__scene" aria-hidden="true">
+      <svg viewBox="0 0 1440 330" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="m1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#B2C0B8"/><stop offset="1" stop-color="#CBD2C4"/>
+          </linearGradient>
+          <linearGradient id="m2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7C8F80"/><stop offset="1" stop-color="#9AA899"/>
+          </linearGradient>
+          <linearGradient id="m3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#42544A"/><stop offset="1" stop-color="#5D7060"/>
+          </linearGradient>
+          <linearGradient id="m4" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#22302A"/><stop offset="1" stop-color="#2F3E33"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="#D98555" stop-opacity=".26"/>
+            <stop offset="1" stop-color="#D98555" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="1150" cy="72" r="118" fill="url(#glow)"/>
+        <circle cx="1150" cy="72" r="42" fill="#D98555" opacity=".82"/>
+        <path d="M0 150 L140 110 L250 140 L380 96 L510 132 L620 110 L760 150 L900 118 L1030 148 L1170 106 L1300 140 L1440 116 L1440 330 L0 330 Z" fill="url(#m1)" opacity=".62"/>
+        <path d="M0 190 L110 158 L220 188 L360 140 L470 180 L590 152 L720 192 L850 160 L980 194 L1110 156 L1240 190 L1440 164 L1440 330 L0 330 Z" fill="url(#m2)" opacity=".78"/>
+        <path d="M0 232 L130 204 L270 236 L400 200 L540 238 L680 210 L820 242 L960 212 L1100 244 L1240 212 L1440 238 L1440 330 L0 330 Z" fill="url(#m3)"/>
+        <path d="M0 282 L160 262 L320 284 L480 262 L640 288 L800 266 L960 290 L1120 264 L1280 288 L1440 270 L1440 330 L0 330 Z" fill="url(#m4)"/>
+        <g stroke="#2F3E33" stroke-width="1.3" opacity=".4" fill="none">
+          <path d="M196 330 L196 300 M168 312 L196 300 L224 312"/>
+          <path d="M1076 330 L1076 302 M1048 314 L1076 302 L1104 314"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero__in">
+      <p class="eyebrow">CHENGDU · ROAD ATLAS · <span id="heroYear">2026</span></p>
+      <h1>从成都，<br>往山海去。</h1>
+      <p class="hero__lede">
+        143 条以成都为起点的自驾路线，按湖泊、雪山、大海、草原、峡谷、古镇、荒漠、宠物出行与户外徒步分成九卷。前八卷各 15 条，
+        户外徒步卷另补长坪沟、阿尔沟、南极洛、麦理浩径等经典步道，共 23 条。
+        每条都算清了里程、车程、高速过路费、电费与门票，并附上当地未来 10 天的天气——
+        每天从 meteoblue 重新抓一次，出发前，把路和天一起看完。
+      </p>
+      <div class="hero__stats">
+        <div class="stat"><b id="statCount">143</b><span>条路线</span></div>
+        <div class="stat"><b id="statCats">9</b><span>类风光</span></div>
+        <div class="stat"><b id="statFar">3,300</b><span>最远公里</span></div>
+        <div class="stat"><b id="statDays">10</b><span>日天气</span></div>
+      </div>
+      <div class="hero__cta">
+        <a class="btn btn--solid" href="#atlas">开始选路线</a>
+        <a class="btn btn--ghost" href="#weather-board">先看天气</a>
+      </div>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true"><span></span>向下滚动</div>
+  </section>
+
+  <!-- ================= FILTER ================= -->
+  <section class="atlas" id="atlas">
+    <div class="sect-head">
+      <p class="eyebrow">01 / DESTINATIONS</p>
+      <h2>按风光挑一个方向</h2>
+      <p class="sect-sub">默认「综合推荐」：按景致、当季、未来五天天气与里程花费加权打分，会随季节和天气每天变化。也可切换为星级、距离、海拔、花费或名称排序。点开卡片看完整路线、费用和十日天气。</p>
+    </div>
+
+    <div class="filters" id="filters">
+      <div class="filter-row">
+        <span class="filter-label">风光</span>
+        <div class="chips" id="catChips"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">行程</span>
+        <div class="chips" id="tripChips"></div>
+      </div>
+      <div class="filter-row filter-row--end">
+        <label class="search">
+          <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5 L18 18" stroke="currentColor" stroke-width="1.6"/></svg>
+          <input type="search" id="search" placeholder="搜城市、景区或关键词" autocomplete="off">
+        </label>
+        <label class="sortsel">
+          <span>排序</span>
+          <select id="sort">
+            <option value="rec">综合推荐</option>
+            <option value="star">推荐星级</option>
+            <option value="km">距离由近到远</option>
+            <option value="alt">海拔由高到低</option>
+            <option value="cost">花费由低到高</option>
+            <option value="name">按名字</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="resultbar">
+      <span id="resultCount">143 个目的地</span>
+      <span class="resultbar__hint" id="resultHint"></span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>没有符合条件的路线，换个筛选试试。</div>
+  </section>
+
+  <!-- ================= RADIAL ================= -->
+  <section class="radial-sect" id="radial">
+    <div class="sect-head">
+      <p class="eyebrow">02 / COMPASS</p>
+      <h2>成都为中心的方位与距离</h2>
+      <p class="sect-sub">角度是方位，半径是公路里程（非线性压缩，越远越收拢）。143 个点全画出来难免挤，所以默认只显示小圆点：点图上的任一圈层，或右侧的某一档，只有这一段距离里的目的地会亮起并显示名字，其余淡出；还可以再按风光收窄。悬停看名字，点开看详情。</p>
+    </div>
+    <div class="radial-wrap">
+      <svg id="radialSvg" viewBox="0 0 980 720" role="img" aria-label="以成都为中心的目的地方位距离图"></svg>
+      <div class="radial-legend" id="radialLegend"></div>
+    </div>
+  </section>
+
+  <!-- ================= WEATHER BOARD ================= -->
+  <section class="wb" id="weather-board">
+    <div class="sect-head">
+      <p class="eyebrow">03 / FORECAST</p>
+      <h2>未来 10 天，各地什么天气</h2>
+      <p class="sect-sub">
+        数据抓取自 <a href="https://www.meteoblue.com" target="_blank" rel="noopener">meteoblue</a> 的逐日预报，
+        每格为当日最高气温，颜色表示冷暖。点开任一格可看该日的降水、风速与日照。
+        「今天」按本地日期判定；数据源按 UTC 排期，起始日可能早一天，已过日期会置灰。
+      </p>
+      <p class="sect-stamp" id="wbStamp"></p>
+    </div>
+    <div class="wb-tools">
+      <div class="chips chips--sm" id="wbChips"></div>
+      <div class="wb-scale"><span>冷</span><i class="wb-scale__bar"></i><span>热</span></div>
+    </div>
+    <div class="wb-scroll">
+      <table class="wb-table" id="wbTable"></table>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="about" id="about">
+    <div class="about__in">
+      <div class="about__col">
+        <p class="eyebrow">04 / NOTES</p>
+        <h2>这些数字怎么来的</h2>
+        <p>
+          默认的「综合推荐」是每次打开页面时现算的 0—100 分：<b>景致 30%</b>（编辑星级）、
+          <b>当季 20%</b>（把「4—6 月 / 9—11 月」这类最佳季节文本解析成月份，刚过季或临近入季按半数计）、
+          <b>近五日天气 30%</b>（今天起 5 天按 0.8 等比衰减，综合天气现象、降水量、气温与大风）、
+          <b>里程与花费 20%</b>（半饱和曲线，远途不会被一票否决）。
+          卡片上的分数角标可悬停查看分项，点开详情页有完整的四项拆解。它只回答「现在去合不合适」，
+          不取代星级——只想看编辑推荐，可在排序里切到「推荐星级」。暂无天气时天气项按中性 50 分计，不奖不罚。
+        </p>
+        <p>
+          里程与车程按主流导航路线的主干道取整估算，指「成都天府广场 → 目的地核心景区」的单程距离；
+          过路费为 7 座以下小客车单程高速通行费估算值，桥隧比高的山区路段（雅西、雅康、都汶）单价更高；
+          电费按标称续航 500—600 km 的纯电车估算：高速与山路综合电耗 18 kWh/100km、公共快充 1.2 元/kWh，
+          约 0.22 元/公里；按高速实际可用续航约 380 km 折算，详情页给出单程建议补电次数。若以家充为主，电费约为其一半。
+        </p>
+        <p>
+          门票为旺季成人票参考价，索道、观光车等通常另计。海拔取景区主要住宿点或核心观景点高度，
+          不是主峰高度。天气为 meteoblue 逐日预报，越靠后的日期误差越大，出发前请复核。
+        </p>
+        <p>
+          「宠物出行」卷只收录有明确管理主体、能查到放行依据的<b>正规景区</b>，镇、村、湿地公园与城市绿道不再列入。
+          依据分三档：石棉县政府县长信箱书面答复确认王岗坪为「宠物友好型景区」（宠物清洁费 40 元 / 只），
+          西岭雪山前山大飞水有景区公告（限中小型犬、宠物免票），彭州白鹿音乐旅游景区由官方发布全域适宠升级；
+          剑门关、兴文石海、蒙顶山、青城后山等按 2026 年 9 月官方购票须知红黑榜的实测放行口径收录。
+          四川省内能这样核实的景区不足 15 处，因此补入九子岩、明月山、呀诺达三处全国工商联旅游业商会景区分会
+          「首批精品宠游线路」景区，它们是 1400—1900 公里的深度长线，须分段开、每两小时让狗下车活动，跨省还要备免疫证明。
+        </p>
+        <p>
+          口径互相冲突的一律不收：采石矶有 2026 年 9 月宠物友好公告、票务平台却仍标「谢绝宠物」；蔚然花海、花舞人间与
+          白鹤滩国家湿地公园同样存在矛盾记录。本卷之外，九寨沟、黄龙、稻城亚丁、四姑娘山、毕棚沟、海螺沟、峨眉山、乐山大佛、
+          青城前山与都江堰核心区、瓦屋山、牛背山、碧峰峡、邛崃天台山、乌尔禾魔鬼城按官方须知禁宠；
+          塔公草原、阆中古城、蜀南竹海等适合携宠的开放式目的地仍归在原类别，不重复收录。
+          政策会随防火季、红叶季与节假日调整，索道轿厢与室内场馆常另有限制，出发前务必致电景区复核；
+          牵引绳、免疫证明、嘴套与拾便袋为标配，大型犬与烈性犬多有限制，高原还要留意犬只高反。
+        </p>
+        <p>
+          「户外徒步」卷共 23 条，只收录正规开放、有明确管理与成熟步道的目的地，里程算到景区入口或徒步起点，
+          不含步道本身的长度与爬升（已在各条贴士里另写）。本卷补齐了省内的长坪沟、阿尔沟、海子沟与党岭葫芦海，
+          以及省外的南极洛高山湖群、麦理浩径、徽杭古道与喀纳斯三湾。彭州九峰山、都江堰赵公山等未开发野山，
+          以及黑竹沟保护区穿越线，按林业与公安部门公告严禁擅自进入，一律不列入；
+          海拔 3500 米以上山峰的攀登还需另行办理行政许可。
+          四姑娘山的三条沟门票分开，长坪沟的「长穿毕」与海子沟的露营、登山、穿越必须在管理局户外运动中心报备并请向导；
+          南极洛 2026 年 9 月 30 日才恢复试运营，只开小环线、大环线仍封禁，须提前 7 天小程序实名预约并乘官方接驳车；
+          党岭每年 11 月下旬起通常防火封山。麦理浩径在中国香港，须持港澳通行证及签注，内地车牌不能直接驶入，
+          里程只算到深圳口岸，实际建议飞抵或高铁到口岸后换乘。扎尕那、梵净山、张家界（凡进必约）与华山均需实名分时预约，
+          华山 2026 年已全面取消现场售票；喀纳斯也实行分时预约。甘南与高原路段冬季可能交通管制，
+          汛期步道也会临时封闭，行前务必查景区公告与实时路况。
+        </p>
+      </div>
+      <div class="about__col">
+        <h3>读图指南</h3>
+        <p class="notes-lead">方位距离图按下面六段划分圈层，与上方「行程」筛选不完全等同：行程看的是天数，圈层看的是公路里程。</p>
+        <ul class="notes">
+          <li><b>家门口</b> 300 公里内，当天或周末往返，成都近郊与川西边缘。</li>
+          <li><b>川西短线</b> 300—600 公里，2 至 3 天，四姑娘山、康定、松潘的主场。</li>
+          <li><b>小长假</b> 600—1000 公里，3 至 5 天，滇北、黔北与甘南。</li>
+          <li><b>长假远征</b> 1000—1600 公里，5 至 7 天，含青海、广西、黔西。</li>
+          <li><b>跨省长线</b> 1600—2200 公里，7 天起，华东与华南沿海。</li>
+          <li><b>深度长线</b> 2200 公里以上，建议飞抵或分段；最远 3300 公里（喀纳斯三湾），更适合落地租车。</li>
+        </ul>
+        <h3>三条硬提醒</h3>
+        <ul class="notes">
+          <li>海拔 3000 米以上，第一晚别洗澡、别喝酒、别赶夜路。</li>
+          <li>标称 500—600 km 的纯电车，高速与高原实际约 350—420 km；川西充电桩间距大，进山前满电并提前查桩位。</li>
+          <li>10 月下旬起，折多山、巴朗山、巴塘段随时可能因雪管制。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot__in">
+    <div>
+      <strong>从成都出发 · 山海自驾图谱</strong>
+      <p>天气数据 © <a href="https://www.meteoblue.com" target="_blank" rel="noopener">meteoblue</a>；里程、费用、门票为规划参考，实际以导航、收费站与景区公告为准。</p>
+    </div>
+    <div class="foot__meta">
+      <span id="footStamp"></span>
+      <span>仅供出行规划参考</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= DRAWER ================= -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="路线详情">
+  <div class="drawer__head">
+    <span class="drawer__eyebrow" id="dCat">—</span>
+    <button class="drawer__close" id="dClose" aria-label="关闭">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="drawer__body" id="dBody"></div>
+</aside>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="data/dataset.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+# 每天在云端重抓 143 个坐标点的十日预报，重建 dataset.js 并发布到 GitHub Pages。
+# schedule 用 UTC：'0 23 * * *' = 北京时间次日 07:00。
+# TZ 必须在 job 级设为 Asia/Shanghai，否则 update.py 里的 date.today() 会按 UTC 写
+# updated_date，比北京慢一天，前端会误判数据过期并弹出过期提示条。
+# 抓取只用 Python 标准库，无需 pip install；失败率超阈值时脚本自行放弃，
+# 本 workflow 随之失败，线上保留上一次成功部署的数据。
+
+name: Refresh weather and deploy Pages
+
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  refresh-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Refresh 10-day forecast
+        run: |
+          python3 tools/update.py --force || {
+            echo '首次抓取未达标，等待 60 秒后重试一次'
+            sleep 60
+            python3 tools/update.py --force
+          }
+
+      - name: Copy dataset into publish root
+        run: |
+          mkdir -p site/data
+          cp data/dataset.js site/data/dataset.js
+          python3 - <<'PY'
+          import json, pathlib
+          s = pathlib.Path('site/data/dataset.js').read_text(encoding='utf-8')
+          assert 'window.DESTINATIONS=' in s and len(s) > 100000, 'dataset.js 异常'
+          w = json.loads(pathlib.Path('data/weather.json').read_text(encoding='utf-8'))
+          print('date:', w['_meta']['updated_date'], '| points:', len(w['points']),
+                '| failed:', w['_meta']['failed'])
+          PY
+
+      - name: Commit refreshed data back to repo
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/weather.json data/dataset.js site/data/dataset.js
+          if git diff --cached --quiet; then
+            echo '数据无变化，跳过提交'
+          else
+            git commit -m "chore: refresh weather $(date +%F)"
+            git push
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
