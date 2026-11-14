@@ -895,7 +895,8 @@
 
   function renderWb(filterCat) {
     const list = (filterCat && filterCat !== "all") ? DEST.filter((d) => d.cat === filterCat) : DEST.slice();
-    const dates = DEST[0].weather.map((x) => x.date);
+    // 表头取所有点日期的并集，避免首条目的地缺某天时整列消失
+    const dates = Array.from(new Set(DEST.flatMap((d) => d.weather.map((x) => x.date)))).sort();
     const WD = ["日", "一", "二", "三", "四", "五", "六"];
     const tKey = todayKey();
     let head = '<thead><tr><th class="dname" style="text-align:left">目的地</th>' +
@@ -918,7 +919,15 @@
         rows += '<tr style="--rowcat:' + catColor(d.cat) + '"><td class="dname">' + esc(d.name) + "<small>" + esc(d.sub.split("·")[1] || d.sub) + "</small></td>";
         dates.forEach((dt) => {
           const w = d.weather.find((x) => x.date === dt);
-          if (!w) { rows += '<td class="wb-cell" style="background:#EEE7D8"></td>'; return; }
+          if (!w) {
+            const last = d.weather[d.weather.length - 1];
+            const tip = last
+              ? d.name + " 的预报截至 " + last.date.slice(5).replace("-", "/") + "，最后一天无数据"
+              : d.name + " 暂无预报数据";
+            rows += '<td class="wb-cell wb-cell--na" style="background:#EEE7D8;color:#BCB09A" title="' +
+              esc(tip) + '">—</td>';
+            return;
+          }
           const c = tempColor(w.tmax);
           const lbl = wx(w.day)[0];
           rows += '<td class="wb-cell" style="background:' + c + ";color:" + textOn(c) + '" title="' + esc(d.name + " " + dt + "｜" + lbl + "｜" + Math.round(w.tmin) + "~" + Math.round(w.tmax) + "°C｜降水 " + (w.precip === "-" ? "无" : w.precip) + "｜风 " + w.wind + " km/h") +

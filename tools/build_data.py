@@ -42,6 +42,20 @@ else:  # 兼容旧版纯 {id: [...]} 结构
     weather = {k: v for k, v in _raw.items() if isinstance(v, list)}
     WEATHER_META = {"updated_date": "", "source": "meteoblue", "legacy": True}
 
+_updated = (WEATHER_META.get("updated_date") or "").strip()
+
+
+def future_only(rows):
+    """丢弃早于抓取当天的格子。
+
+    meteoblue 按 UTC 排期，凌晨抓取时部分坐标点会多给一天昨天；这些格子在前端只能置灰，
+    还会让表头多出一整列过去日期。这里统一裁掉，保证每行车都从抓取当天开始。
+    """
+    if not _updated:
+        return rows
+    return [r for r in rows if (r.get("date") or "") >= _updated]
+
+
 out = []
 for d in DEST:
     item = dict(d)
@@ -51,12 +65,19 @@ for d in DEST:
     item["bearing"] = round(bearing(d["lat"], d["lon"]), 1)
     item["trip"] = trip_bucket(d["km"])
     item["cost"] = d["toll"] + item["energy"]
-    item["weather"] = weather.get(d["id"]) or []
+    item["weather"] = future_only(weather.get(d["id"]) or [])
     out.append(item)
 
 out.sort(key=lambda x: (x["cat"], x["km"]))
+
+# forecast_start 以裁剪后的实际首日为准，避免 meta 里残留昨天让前端回退到旧日期
+meta_out = dict(WEATHER_META)
+starts = sorted({x["weather"][0]["date"] for x in out if x["weather"] and x["weather"][0].get("date")})
+if starts:
+    meta_out["forecast_start"] = starts[0]
+
 js = ("window.WEATHER_META=%s;\nwindow.CATEGORIES=%s;\nwindow.DESTINATIONS=%s;\n") % (
-    json.dumps(WEATHER_META, ensure_ascii=False, separators=(",", ":")),
+    json.dumps(meta_out, ensure_ascii=False, separators=(",", ":")),
     json.dumps(CATS, ensure_ascii=False, separators=(",", ":")),
     json.dumps(out, ensure_ascii=False, separators=(",", ":")),
 )

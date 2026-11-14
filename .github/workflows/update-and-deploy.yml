@@ -68,6 +68,13 @@ jobs:
           hi, avg = max(temps), sum(temps) / len(temps)
           assert hi <= 55 and avg <= 40, 'temperature unit suspicious: max=%s mean=%.1f' % (hi, avg)
           print('temp check: max %.1f C / mean %.1f C' % (hi, avg))
+          # 日期防线：meteoblue 按 UTC 排期，凌晨抓取会多给一天昨天；build_data 已裁掉，
+          # 这里确认裁干净，避免页面多出一整列已过日期并触发「起始日」提示。
+          upd = w['_meta']['updated_date']
+          stale = [(x['id'], y['date']) for x in data for y in x['weather'] if y['date'] < upd]
+          assert not stale, 'stale forecast rows: %s' % stale[:3]
+          print('forecast starts:', sorted({x['weather'][0]['date'] for x in data if x['weather']}),
+                '| stale rows:', len(stale))
           PY
 
       - name: Commit refreshed data back to repo
