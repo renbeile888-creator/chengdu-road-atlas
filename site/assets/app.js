@@ -591,7 +591,7 @@
     $("#resultCount").textContent = list.length + " 个目的地";
     const km = list.reduce((s, d) => s + d.km, 0);
     $("#resultHint").textContent = list.length
-      ? "合计 " + fmt(km) + " 公里 · 过路费均值 ¥" + Math.round(list.reduce((s, d) => s + d.toll, 0) / list.length)
+      ? "里程均值 " + fmt(Math.round(km / list.length)) + " 公里 · 过路费均值 ¥" + Math.round(list.reduce((s, d) => s + d.toll, 0) / list.length)
       : "";
     $("#empty").hidden = list.length > 0;
     // 进场动画只在首次浏览时出现；筛选切换时重播会干扰快速操作
