@@ -1,7 +1,7 @@
 {
  "_meta": {
   "updated_date": "2026-11-15",
-  "updated_at": "2026-11-15T03:42:48+08:00",
+  "updated_at": "2026-11-15T03:53:55+08:00",
   "source": "meteoblue.com/en/weather/week",
   "points": 143,
   "fetched": 143,
@@ -1762,7 +1762,7 @@
     "night": "Partly cloudy",
     "tmax": 28,
     "tmin": 24,
-    "wind": 16,
+    "wind": 18,
     "wdir": "E",
     "precip": "-",
     "sun": 5.0
@@ -1775,7 +1775,7 @@
     "tmax": 29,
     "tmin": 23,
     "wind": 19,
-    "wdir": "E",
+    "wdir": "NE",
     "precip": "-",
     "sun": 6.0
    },
@@ -1810,7 +1810,7 @@
     "night": "Clear and few clouds",
     "tmax": 26,
     "tmin": 21,
-    "wind": 16,
+    "wind": 18,
     "wdir": "NE",
     "precip": "-",
     "sun": 1.0
@@ -16360,23 +16360,11 @@
   ],
   "yanuoda": [
    {
-    "date": "2026-11-14",
-    "wd": "Sat",
-    "day": "Clear and few clouds",
-    "night": "Clear and few clouds",
-    "tmax": 28,
-    "tmin": 21,
-    "wind": 11,
-    "wdir": "SE",
-    "precip": "-",
-    "sun": 8.0
-   },
-   {
     "date": "2026-11-15",
     "wd": "Sun",
     "day": "Partly cloudy",
     "night": "Fog",
-    "tmax": 27,
+    "tmax": 28,
     "tmin": 22,
     "wind": 11,
     "wdir": "SE",
@@ -16386,13 +16374,13 @@
    {
     "date": "2026-11-16",
     "wd": "Mon",
-    "day": "Partly cloudy",
+    "day": "Partly cloudy with a chance of local thunderstorms",
     "night": "Fog",
     "tmax": 28,
     "tmin": 22,
     "wind": 13,
     "wdir": "SE",
-    "precip": "-",
+    "precip": "0-3 mm",
     "sun": 4.0
    },
    {
@@ -16400,9 +16388,9 @@
     "wd": "Tue",
     "day": "Partly cloudy",
     "night": "Fog",
-    "tmax": 28,
-    "tmin": 22,
-    "wind": 13,
+    "tmax": 29,
+    "tmin": 23,
+    "wind": 14,
     "wdir": "SE",
     "precip": "-",
     "sun": 4.0
@@ -16410,13 +16398,13 @@
    {
     "date": "2026-11-18",
     "wd": "Wed",
-    "day": "Partly cloudy with a chance of local thunderstorms",
+    "day": "Partly cloudy",
     "night": "Partly cloudy",
-    "tmax": 31,
-    "tmin": 21,
+    "tmax": 30,
+    "tmin": 22,
     "wind": 13,
     "wdir": "SE",
-    "precip": "0-3 mm",
+    "precip": "-",
     "sun": 4.0
    },
    {
@@ -16435,9 +16423,9 @@
     "date": "2026-11-20",
     "wd": "Fri",
     "day": "Clear and few clouds",
-    "night": "Clear and few clouds",
+    "night": "Partly cloudy",
     "tmax": 28,
-    "tmin": 20,
+    "tmin": 21,
     "wind": 16,
     "wdir": "N",
     "precip": "-",
@@ -16446,14 +16434,14 @@
    {
     "date": "2026-11-21",
     "wd": "Sat",
-    "day": "Mostly cloudy",
-    "night": "Clear and few clouds",
+    "day": "Partly cloudy",
+    "night": "Partly cloudy",
     "tmax": 26,
     "tmin": 19,
-    "wind": 11,
+    "wind": 14,
     "wdir": "N",
     "precip": "-",
-    "sun": 1.0
+    "sun": 5.0
    },
    {
     "date": "2026-11-22",
@@ -16461,8 +16449,8 @@
     "day": "Clear and few clouds",
     "night": "Partly cloudy",
     "tmax": 27,
-    "tmin": 19,
-    "wind": 11,
+    "tmin": 20,
+    "wind": 10,
     "wdir": "N",
     "precip": "-",
     "sun": 8.0
@@ -16474,10 +16462,22 @@
     "night": "Mixed with showers",
     "tmax": 28,
     "tmin": 21,
-    "wind": 11,
+    "wind": 10,
     "wdir": "N",
     "precip": "5-10 mm",
     "sun": 7.0
+   },
+   {
+    "date": "2026-11-24",
+    "wd": "Tue",
+    "day": "Mixed with showers",
+    "night": "Mostly cloudy with occasional rain",
+    "tmax": 28,
+    "tmin": 22,
+    "wind": 8,
+    "wdir": "N",
+    "precip": "5-10 mm",
+    "sun": 8.0
    }
   ],
   "changpinggou": [
