@@ -55,12 +55,19 @@ jobs:
           mkdir -p site/data
           cp data/dataset.js site/data/dataset.js
           python3 - <<'PY'
-          import json, pathlib
+          import json, pathlib, re
           s = pathlib.Path('site/data/dataset.js').read_text(encoding='utf-8')
           assert 'window.DESTINATIONS=' in s and len(s) > 100000, 'dataset.js 异常'
           w = json.loads(pathlib.Path('data/weather.json').read_text(encoding='utf-8'))
           print('date:', w['_meta']['updated_date'], '| points:', len(w['points']),
                 '| failed:', w['_meta']['failed'])
+          # 单位防线：CI 出口 IP 在美国时 meteoblue 会返回华氏度（曾把 49°F 写成 49°C）。
+          # 抓取器已自动换算，这里再兜一次底，异常就不部署。
+          data = json.loads(re.search(r'window\.DESTINATIONS=(\[.*\]);\s*$', s, re.S).group(1))
+          temps = [y['tmax'] for x in data for y in x['weather'] if y.get('tmax') is not None]
+          hi, avg = max(temps), sum(temps) / len(temps)
+          assert hi <= 55 and avg <= 40, 'temperature unit suspicious: max=%s mean=%.1f' % (hi, avg)
+          print('temp check: max %.1f C / mean %.1f C' % (hi, avg))
           PY
 
       - name: Commit refreshed data back to repo

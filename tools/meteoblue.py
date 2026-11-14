@@ -11,6 +11,9 @@ meteoblue 10 日天气预报抓取器（零第三方依赖，只用 Python 标�
 公开接口：
     fetch(lat, lon, timeout=30)  -> {"days": [...], "source": "..."}
       days 每项：date / wd / day / night / tmax / tmin / wind / wdir / precip / sun
+
+单位：meteoblue 会按访问者出口 IP 自动挑单位（中国 °C/km/h/mm，美国 °F/mph/inch），
+      所以 parse() 会读页面上的单位标记，统一换算成项目约定的公制后再返回。
 """
 import gzip
 import io
@@ -110,6 +113,74 @@ RE_WDIR = re.compile(r'winddir\s+([A-Z]{1,3})')
 RE_PRECIP = re.compile(r'tab-precip"[^>]*>(.*?)</div>', re.S)
 RE_SUN = re.compile(r'tab-sun"[^>]*>(.*?)</div>', re.S)
 
+# --- 单位自适应 -------------------------------------------------------------
+# 少这一步的后果：CI 出口 IP 在美国时页面返回 49 °F，脚本只取数字就写成 49 °C，
+# 前端温度数值与色块全错。单位菜单的 <li class="selected"> 标出当前单位。
+RE_SELECTED_UNIT = re.compile(
+    r'<li class="selected">\s*<a[^>]*?data-type="(temp|speed|precip)"'
+    r'\s*data-unit="([A-Z_]+)"', re.S)
+RE_TEMP_SIGN = re.compile(
+    r'tab-temp-max[^>]*>\s*-?\d+(?:\.\d+)?\s*(?:&nbsp;|\s)*°\s*([CF])')
+WIND_FACTOR = {
+    "KILOMETER_PER_HOUR": 1.0,
+    "MILE_PER_HOUR": 1.609344,
+    "METER_PER_SECOND": 3.6,
+    "KNOT": 1.852,
+}
+METRIC_UNITS = {"temp": "CELSIUS", "speed": "KILOMETER_PER_HOUR", "precip": "MILLIMETER"}
+
+
+def detect_units(html):
+    """返回当前页面单位；菜单结构变动时从单元格里的单位符号兜底。"""
+    units = dict(METRIC_UNITS)
+    found = RE_SELECTED_UNIT.findall(html)
+    if found:
+        for typ, unit in found:
+            if typ in units:
+                units[typ] = unit
+        return units
+    sign = RE_TEMP_SIGN.search(html)
+    if sign:
+        units["temp"] = "CELSIUS" if sign.group(1) == "C" else "FAHRENHEIT"
+    wind = RE_WIND.search(html)
+    wtxt = _clean(wind.group(1)) if wind else ""
+    for token, unit in (("km/h", "KILOMETER_PER_HOUR"), ("mph", "MILE_PER_HOUR"),
+                        ("m/s", "METER_PER_SECOND"), ("kn", "KNOT"), ("bft", "BEAUFORT")):
+        if token in wtxt:
+            units["speed"] = unit
+            break
+    precs = [_clean(t).replace("&quot;", '"') for t in RE_PRECIP.findall(html)]
+    if any('"' in t or re.search(r"\bin\b", t) for t in precs):
+        units["precip"] = "INCH"
+    return units
+
+
+def to_metric(days, units):
+    """把非公制读数换算成 °C / km/h / mm，其余字段原样保留。"""
+    if units["temp"] == "FAHRENHEIT":
+        for d in days:
+            for k in ("tmax", "tmin"):
+                if d[k] is not None:
+                    d[k] = round((d[k] - 32) * 5 / 9)
+    if units["speed"] == "BEAUFORT":
+        for d in days:
+            if d["wind"] is not None:
+                d["wind"] = round(0.836 * (d["wind"] ** 1.5) * 3.6)
+    elif WIND_FACTOR.get(units["speed"], 1.0) != 1.0:
+        f = WIND_FACTOR[units["speed"]]
+        for d in days:
+            if d["wind"] is not None:
+                d["wind"] = round(d["wind"] * f)
+    if units["precip"] == "INCH":
+        for d in days:
+            t = d["precip"]
+            if t and t != "-":
+                mm = re.sub(r"\d+(?:\.\d+)?",
+                            lambda m: str(round(float(m.group()) * 25.4)), t)
+                mm = mm.replace('"', "").replace("in", "").strip()
+                d["precip"] = (mm + " mm") if mm else "-"
+    return days
+
 
 def parse(html):
     """把 week 页面 HTML 解析成 10 天列表。"""
@@ -156,7 +227,7 @@ def parse(html):
             "precip": prec_txt,
             "sun": sun_h,
         })
-    return days[:10]
+    return to_metric(days[:10], detect_units(html))
 
 
 def fetch(lat, lon, timeout=30):
@@ -168,4 +239,10 @@ def fetch(lat, lon, timeout=30):
     days = parse(html)
     if len(days) < 3:
         raise RuntimeError("解析到 %d 天，页面结构可能已变更" % len(days))
+    # 兜底：单位识别万一失效，宁可让这个点失败，也不要把华氏读数写进数据。
+    for day in days:
+        for key in ("tmax", "tmin"):
+            v = day.get(key)
+            if v is not None and not -60 <= v <= 55:
+                raise RuntimeError("%s=%s 超出合理气温范围，单位换算可能失败" % (key, v))
     return {"days": days, "source": url}
