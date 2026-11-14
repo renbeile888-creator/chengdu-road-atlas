@@ -1,7 +1,7 @@
 {
  "_meta": {
   "updated_date": "2026-11-15",
-  "updated_at": "2026-11-15T02:42:08+08:00",
+  "updated_at": "2026-11-15T03:03:54+08:00",
   "source": "meteoblue.com/en/weather/week",
   "points": 143,
   "fetched": 143,
@@ -248,7 +248,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 34.0,
     "tmin": 22.0,
-    "wind": 18.0,
+    "wind": 17.0,
     "wdir": "W",
     "precip": "-",
     "sun": 9.0
@@ -752,7 +752,7 @@
     "tmin": 35.0,
     "wind": 5.0,
     "wdir": "E",
-    "precip": "0-0.1\"",
+    "precip": "0.1-0.2\"",
     "sun": 2.0
    },
    {
@@ -764,7 +764,7 @@
     "tmin": 34.0,
     "wind": 4.0,
     "wdir": "SE",
-    "precip": "0.2-0.4\"",
+    "precip": "0.1-0.2\"",
     "sun": 0.0
    },
    {
@@ -1014,7 +1014,7 @@
    {
     "date": "2026-11-17",
     "wd": "Tue",
-    "day": "Mostly cloudy with occasional rain",
+    "day": "Mostly cloudy",
     "night": "Overcast with occasional rain",
     "tmax": 48.0,
     "tmin": 36.0,
@@ -1373,7 +1373,7 @@
     "tmax": 46.0,
     "tmin": 36.0,
     "wind": 6.0,
-    "wdir": "S",
+    "wdir": "SW",
     "precip": "0-0.8\"",
     "sun": 0.0
    },
@@ -1520,19 +1520,19 @@
     "tmin": 31.0,
     "wind": 5.0,
     "wdir": "E",
-    "precip": "0.2-0.4\"",
+    "precip": "0.1-0.2\"",
     "sun": 0.0
    },
    {
     "date": "2026-11-19",
     "wd": "Thu",
-    "day": "Overcast with occasional snow",
-    "night": "Mostly cloudy with occasional snow",
+    "day": "Overcast",
+    "night": "Partly cloudy",
     "tmax": 31.0,
     "tmin": 26.0,
     "wind": 5.0,
     "wdir": "E",
-    "precip": "0-0.8\"",
+    "precip": "-",
     "sun": 0.0
    },
    {
@@ -2350,7 +2350,7 @@
     "tmin": 23.0,
     "wind": 11.0,
     "wdir": "N",
-    "precip": "0.8-2\"",
+    "precip": "2-4\"",
     "sun": 0.0
    },
    {
@@ -2467,7 +2467,7 @@
     "date": "2026-11-16",
     "wd": "Mon",
     "day": "Partly cloudy",
-    "night": "Mixed with snow showers",
+    "night": "Partly cloudy",
     "tmax": 47.0,
     "tmin": 21.0,
     "wind": 17.0,
@@ -2478,13 +2478,13 @@
    {
     "date": "2026-11-17",
     "wd": "Tue",
-    "day": "Mostly cloudy with a mixture of snow and rain",
-    "night": "Mostly cloudy with a mixture of snow and rain",
+    "day": "Mostly cloudy with occasional rain",
+    "night": "Mostly cloudy with occasional snow",
     "tmax": 45.0,
     "tmin": 21.0,
     "wind": 8.0,
     "wdir": "NW",
-    "precip": "0.1-0.2\"",
+    "precip": "0-0.1\"",
     "sun": 2.0
    },
    {
@@ -2605,7 +2605,7 @@
     "tmax": 65.0,
     "tmin": 46.0,
     "wind": 7.0,
-    "wdir": "SE",
+    "wdir": "S",
     "precip": "-",
     "sun": 5.0
    },
@@ -2676,7 +2676,7 @@
     "night": "Overcast with occasional rain",
     "tmax": 56.0,
     "tmin": 47.0,
-    "wind": 5.0,
+    "wind": 6.0,
     "wdir": "S",
     "precip": "-",
     "sun": 0.0
@@ -2799,7 +2799,7 @@
     "tmax": 38.0,
     "tmin": 18.0,
     "wind": 3.0,
-    "wdir": "S",
+    "wdir": "SE",
     "precip": "-",
     "sun": 6.0
    },
@@ -2833,12 +2833,12 @@
     "date": "2026-11-15",
     "wd": "Sun",
     "day": "Mostly cloudy",
-    "night": "Mostly cloudy with a mixture of snow and rain",
+    "night": "Overcast with occasional snow",
     "tmax": 45.0,
     "tmin": 33.0,
     "wind": 7.0,
     "wdir": "E",
-    "precip": "0.1-0.2\"",
+    "precip": "0.8-2\"",
     "sun": 2.0
    },
    {
@@ -2960,7 +2960,7 @@
     "tmin": 28.0,
     "wind": 5.0,
     "wdir": "SE",
-    "precip": "0.1-0.2\"",
+    "precip": "0.2-0.4\"",
     "sun": 0.0
    },
    {
@@ -3089,7 +3089,7 @@
     "date": "2026-11-17",
     "wd": "Tue",
     "day": "Mostly cloudy",
-    "night": "Overcast with occasional rain",
+    "night": "Mostly cloudy with a mixture of snow and rain",
     "tmax": 45.0,
     "tmin": 29.0,
     "wind": 5.0,
@@ -3100,7 +3100,7 @@
    {
     "date": "2026-11-18",
     "wd": "Wed",
-    "day": "Mostly cloudy with occasional rain",
+    "day": "Mostly cloudy with a mixture of snow and rain",
     "night": "Fog",
     "tmax": 39.0,
     "tmin": 28.0,
@@ -3321,7 +3321,7 @@
     "date": "2026-11-16",
     "wd": "Mon",
     "day": "Partly cloudy",
-    "night": "Mostly cloudy with a mixture of snow and rain",
+    "night": "Mostly cloudy with occasional rain",
     "tmax": 48.0,
     "tmin": 30.0,
     "wind": 15.0,
@@ -3337,7 +3337,7 @@
     "tmax": 46.0,
     "tmin": 29.0,
     "wind": 7.0,
-    "wdir": "SW",
+    "wdir": "S",
     "precip": "0.1-0.2\"",
     "sun": 1.0
    },
@@ -3396,7 +3396,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 50.0,
     "tmin": 27.0,
-    "wind": 8.0,
+    "wind": 9.0,
     "wdir": "SW",
     "precip": "-",
     "sun": 3.0
@@ -3447,7 +3447,7 @@
     "tmax": 60.0,
     "tmin": 56.0,
     "wind": 7.0,
-    "wdir": "N",
+    "wdir": "NE",
     "precip": "0-0.1\"",
     "sun": 0.0
    },
@@ -3519,7 +3519,7 @@
     "tmax": 59.0,
     "tmin": 43.0,
     "wind": 3.0,
-    "wdir": "N",
+    "wdir": "S",
     "precip": "-",
     "sun": 10.0
    },
@@ -3820,7 +3820,7 @@
    {
     "date": "2026-11-17",
     "wd": "Tue",
-    "day": "Mostly cloudy",
+    "day": "Mostly cloudy with occasional rain",
     "night": "Overcast with occasional rain",
     "tmax": 61.0,
     "tmin": 43.0,
@@ -3832,13 +3832,13 @@
    {
     "date": "2026-11-18",
     "wd": "Wed",
-    "day": "Mostly cloudy with occasional rain",
+    "day": "Mostly cloudy",
     "night": "Clear and few clouds",
     "tmax": 61.0,
     "tmin": 42.0,
     "wind": 5.0,
     "wdir": "S",
-    "precip": "0-0.1\"",
+    "precip": "0.1-0.2\"",
     "sun": 1.0
    },
    {
@@ -3884,7 +3884,7 @@
     "night": "Partly cloudy",
     "tmax": 68.0,
     "tmin": 38.0,
-    "wind": 5.0,
+    "wind": 6.0,
     "wdir": "W",
     "precip": "-",
     "sun": 10.0
@@ -4179,7 +4179,7 @@
     "tmax": 41.0,
     "tmin": 28.0,
     "wind": 5.0,
-    "wdir": "NE",
+    "wdir": "N",
     "precip": "-",
     "sun": 0.0
    },
@@ -4397,7 +4397,7 @@
     "tmax": 46.0,
     "tmin": 29.0,
     "wind": 5.0,
-    "wdir": "S",
+    "wdir": "SW",
     "precip": "-",
     "sun": 4.0
    }
@@ -4557,8 +4557,8 @@
     "tmax": 46.0,
     "tmin": 23.0,
     "wind": 6.0,
-    "wdir": "SE",
-    "precip": "0.1-0.2\"",
+    "wdir": "W",
+    "precip": "0-0.1\"",
     "sun": 2.0
    },
    {
@@ -4570,7 +4570,7 @@
     "tmin": 21.0,
     "wind": 4.0,
     "wdir": "SE",
-    "precip": "0-0.8\"",
+    "precip": "0.8-2\"",
     "sun": 3.0
    },
    {
@@ -5399,7 +5399,7 @@
     "tmax": 47.0,
     "tmin": 44.0,
     "wind": 4.0,
-    "wdir": "NE",
+    "wdir": "N",
     "precip": "0.2-0.4\"",
     "sun": 0.0
    },
@@ -5663,12 +5663,12 @@
     "date": "2026-11-18",
     "wd": "Wed",
     "day": "Clear, cloudless sky",
-    "night": "Clear and few clouds",
+    "night": "Mixed with showers",
     "tmax": 41.0,
     "tmin": 26.0,
     "wind": 4.0,
     "wdir": "NE",
-    "precip": "-",
+    "precip": "0-0.1\"",
     "sun": 10.0
    },
    {
@@ -5777,7 +5777,7 @@
     "tmax": 58.0,
     "tmin": 55.0,
     "wind": 8.0,
-    "wdir": "N",
+    "wdir": "NE",
     "precip": "0.4-0.8\"",
     "sun": 0.0
    },
@@ -6009,7 +6009,7 @@
     "tmax": 45.0,
     "tmin": 32.0,
     "wind": 8.0,
-    "wdir": "NW",
+    "wdir": "W",
     "precip": "-",
     "sun": 7.0
    },
@@ -6144,7 +6144,7 @@
     "tmin": 30.0,
     "wind": 4.0,
     "wdir": "E",
-    "precip": "0-0.1\"",
+    "precip": "0.1-0.2\"",
     "sun": 0.0
    },
    {
@@ -6203,7 +6203,7 @@
     "tmax": 36.0,
     "tmin": 26.0,
     "wind": 5.0,
-    "wdir": "E",
+    "wdir": "N",
     "precip": "-",
     "sun": 8.0
    },
@@ -6253,7 +6253,7 @@
     "tmax": 60.0,
     "tmin": 55.0,
     "wind": 4.0,
-    "wdir": "SW",
+    "wdir": "SE",
     "precip": "0.1-0.2\"",
     "sun": 0.0
    },
@@ -6348,7 +6348,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 64.0,
     "tmin": 49.0,
-    "wind": 5.0,
+    "wind": 4.0,
     "wdir": "SW",
     "precip": "-",
     "sun": 7.0
@@ -6729,7 +6729,7 @@
     "tmax": 54.0,
     "tmin": 32.0,
     "wind": 8.0,
-    "wdir": "SE",
+    "wdir": "S",
     "precip": "-",
     "sun": 4.0
    },
@@ -6864,7 +6864,7 @@
     "tmin": 39.0,
     "wind": 6.0,
     "wdir": "N",
-    "precip": "0.1-0.2\"",
+    "precip": "0.2-0.4\"",
     "sun": 4.0
    },
    {
@@ -7068,7 +7068,7 @@
     "night": "Overcast",
     "tmax": 57.0,
     "tmin": 50.0,
-    "wind": 2.0,
+    "wind": 3.0,
     "wdir": "NW",
     "precip": "-",
     "sun": 0.0
@@ -7090,7 +7090,7 @@
    {
     "date": "2026-11-15",
     "wd": "Sun",
-    "day": "Mostly cloudy",
+    "day": "Mostly cloudy with occasional rain",
     "night": "Overcast with occasional rain",
     "tmax": 59.0,
     "tmin": 52.0,
@@ -7115,7 +7115,7 @@
     "date": "2026-11-17",
     "wd": "Tue",
     "day": "Overcast",
-    "night": "Overcast with occasional rain",
+    "night": "Overcast with rain",
     "tmax": 57.0,
     "tmin": 50.0,
     "wind": 5.0,
@@ -7132,7 +7132,7 @@
     "tmin": 48.0,
     "wind": 4.0,
     "wdir": "SW",
-    "precip": "0.1-0.2\"",
+    "precip": "0.2-0.4\"",
     "sun": 3.0
    },
    {
@@ -7212,7 +7212,7 @@
    {
     "date": "2026-11-15",
     "wd": "Sun",
-    "day": "Fog",
+    "day": "Overcast with occasional snow",
     "night": "Overcast with snow",
     "tmax": 32.0,
     "tmin": 29.0,
@@ -7339,7 +7339,7 @@
     "tmax": 56.0,
     "tmin": 52.0,
     "wind": 2.0,
-    "wdir": "E",
+    "wdir": "NE",
     "precip": "0-0.1\"",
     "sun": null
    },
@@ -7363,8 +7363,8 @@
     "tmax": 57.0,
     "tmin": 50.0,
     "wind": 3.0,
-    "wdir": "S",
-    "precip": "0.1-0.2\"",
+    "wdir": "NE",
+    "precip": "0-0.1\"",
     "sun": 0.0
    },
    {
@@ -7423,7 +7423,7 @@
     "tmax": 56.0,
     "tmin": 45.0,
     "wind": 4.0,
-    "wdir": "E",
+    "wdir": "W",
     "precip": "-",
     "sun": 6.0
    },
@@ -7446,7 +7446,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 60.0,
     "tmin": 46.0,
-    "wind": 5.0,
+    "wind": 4.0,
     "wdir": "SW",
     "precip": "-",
     "sun": 7.0
@@ -7505,7 +7505,7 @@
     "date": "2026-11-19",
     "wd": "Thu",
     "day": "Mostly cloudy",
-    "night": "Mostly cloudy",
+    "night": "Mostly cloudy with occasional snow",
     "tmax": 27.0,
     "tmin": 21.0,
     "wind": 6.0,
@@ -7522,7 +7522,7 @@
     "tmin": 19.0,
     "wind": 15.0,
     "wdir": "NW",
-    "precip": "-",
+    "precip": "0-0.8\"",
     "sun": 5.0
    },
    {
@@ -7556,7 +7556,7 @@
     "night": "Overcast",
     "tmax": 36.0,
     "tmin": 22.0,
-    "wind": 3.0,
+    "wind": 4.0,
     "wdir": "NE",
     "precip": "-",
     "sun": 0.0
@@ -7713,7 +7713,7 @@
     "date": "2026-11-15",
     "wd": "Sun",
     "day": "Overcast with occasional rain",
-    "night": "Overcast with rain",
+    "night": "Overcast with occasional rain",
     "tmax": 57.0,
     "tmin": 55.0,
     "wind": 4.0,
@@ -7840,7 +7840,7 @@
     "tmin": 22.0,
     "wind": 5.0,
     "wdir": "E",
-    "precip": "2-4\"",
+    "precip": "0.8-2\"",
     "sun": 0.0
    },
    {
@@ -8108,7 +8108,7 @@
     "tmin": 37.0,
     "wind": 4.0,
     "wdir": "E",
-    "precip": "0.4-0.8\"",
+    "precip": "0.2-0.4\"",
     "sun": 0.0
    },
    {
@@ -8944,14 +8944,14 @@
    {
     "date": "2026-11-17",
     "wd": "Tue",
-    "day": "Mostly cloudy with a mixture of snow and rain",
-    "night": "Mostly cloudy with a mixture of snow and rain",
+    "day": "Partly cloudy",
+    "night": "Overcast with occasional snow",
     "tmax": 42.0,
     "tmin": 23.0,
     "wind": 8.0,
-    "wdir": "W",
-    "precip": "0.1-0.2\"",
-    "sun": 2.0
+    "wdir": "NW",
+    "precip": "0-0.8\"",
+    "sun": 3.0
    },
    {
     "date": "2026-11-18",
@@ -9021,7 +9021,7 @@
     "tmax": 44.0,
     "tmin": 20.0,
     "wind": 7.0,
-    "wdir": "W",
+    "wdir": "SW",
     "precip": "-",
     "sun": 8.0
    },
@@ -9032,7 +9032,7 @@
     "night": "Clear and few clouds",
     "tmax": 36.0,
     "tmin": 19.0,
-    "wind": 9.0,
+    "wind": 10.0,
     "wdir": "NW",
     "precip": "-",
     "sun": 0.0
@@ -9048,7 +9048,7 @@
     "tmin": 50.0,
     "wind": 3.0,
     "wdir": "SE",
-    "precip": "0.1-0.2\"",
+    "precip": "0-0.1\"",
     "sun": 0.0
    },
    {
@@ -9181,7 +9181,7 @@
     "tmax": 76.0,
     "tmin": 71.0,
     "wind": 8.0,
-    "wdir": "SE",
+    "wdir": "NE",
     "precip": "-",
     "sun": 5.0
    },
@@ -9497,7 +9497,7 @@
     "tmax": 62.0,
     "tmin": 58.0,
     "wind": 16.0,
-    "wdir": "NE",
+    "wdir": "N",
     "precip": "-",
     "sun": 2.0
    },
@@ -9676,13 +9676,13 @@
    {
     "date": "2026-11-17",
     "wd": "Tue",
-    "day": "Mostly cloudy with occasional rain",
-    "night": "Mixed with snow showers",
+    "day": "Partly cloudy",
+    "night": "Clear and few clouds",
     "tmax": 44.0,
     "tmin": 19.0,
     "wind": 12.0,
     "wdir": "W",
-    "precip": "0.1-0.2\"",
+    "precip": "-",
     "sun": 4.0
    },
    {
@@ -9694,7 +9694,7 @@
     "tmin": 23.0,
     "wind": 15.0,
     "wdir": "W",
-    "precip": "0-0.8\"",
+    "precip": "-",
     "sun": 9.0
    },
    {
@@ -9957,7 +9957,7 @@
     "date": "2026-11-19",
     "wd": "Thu",
     "day": "Overcast with occasional rain",
-    "night": "Fog",
+    "night": "Overcast with occasional rain",
     "tmax": 42.0,
     "tmin": 39.0,
     "wind": 3.0,
@@ -10157,7 +10157,7 @@
     "tmax": 47.0,
     "tmin": 44.0,
     "wind": 5.0,
-    "wdir": "E",
+    "wdir": "NE",
     "precip": "0.2-0.4\"",
     "sun": 0.0
    },
@@ -10311,12 +10311,12 @@
     "date": "2026-11-19",
     "wd": "Thu",
     "day": "Partly cloudy",
-    "night": "Partly cloudy",
+    "night": "Mostly cloudy with occasional snow",
     "tmax": 29.0,
     "tmin": 20.0,
     "wind": 7.0,
     "wdir": "SE",
-    "precip": "-",
+    "precip": "0-0.8\"",
     "sun": 3.0
    },
    {
@@ -10535,7 +10535,7 @@
     "tmax": 65.0,
     "tmin": 59.0,
     "wind": 11.0,
-    "wdir": "SE",
+    "wdir": "S",
     "precip": "0-0.2\"",
     "sun": 2.0
    },
@@ -10740,7 +10740,7 @@
     "night": "Partly cloudy",
     "tmax": 54.0,
     "tmin": 36.0,
-    "wind": 6.0,
+    "wind": 7.0,
     "wdir": "NW",
     "precip": "0.1-0.2\"",
     "sun": 4.0
@@ -11116,7 +11116,7 @@
    {
     "date": "2026-11-15",
     "wd": "Sun",
-    "day": "Partly cloudy",
+    "day": "Mostly cloudy with occasional rain",
     "night": "Clear and few clouds",
     "tmax": 47.0,
     "tmin": 36.0,
@@ -11205,7 +11205,7 @@
     "tmax": 42.0,
     "tmin": 26.0,
     "wind": 2.0,
-    "wdir": "N",
+    "wdir": "NE",
     "precip": "-",
     "sun": 6.0
    },
@@ -11216,7 +11216,7 @@
     "night": "Clear and few clouds",
     "tmax": 45.0,
     "tmin": 30.0,
-    "wind": 2.0,
+    "wind": 3.0,
     "wdir": "NE",
     "precip": "-",
     "sun": 4.0
@@ -11350,7 +11350,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 37.0,
     "tmin": 23.0,
-    "wind": 7.0,
+    "wind": 6.0,
     "wdir": "W",
     "precip": "-",
     "sun": 9.0
@@ -11448,7 +11448,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 47.0,
     "tmin": 29.0,
-    "wind": 3.0,
+    "wind": 4.0,
     "wdir": "SW",
     "precip": "-",
     "sun": 10.0
@@ -11594,7 +11594,7 @@
     "night": "Clear and few clouds",
     "tmax": 42.0,
     "tmin": 19.0,
-    "wind": 3.0,
+    "wind": 4.0,
     "wdir": "E",
     "precip": "-",
     "sun": 9.0
@@ -11609,7 +11609,7 @@
     "tmax": 51.0,
     "tmin": 39.0,
     "wind": 8.0,
-    "wdir": "W",
+    "wdir": "NW",
     "precip": "0-0.1\"",
     "sun": 5.0
    },
@@ -11704,7 +11704,7 @@
     "night": "Clear and few clouds",
     "tmax": 45.0,
     "tmin": 30.0,
-    "wind": 6.0,
+    "wind": 5.0,
     "wdir": "E",
     "precip": "-",
     "sun": 7.0
@@ -11743,7 +11743,7 @@
     "tmax": 42.0,
     "tmin": 23.0,
     "wind": 9.0,
-    "wdir": "N",
+    "wdir": "NW",
     "precip": "-",
     "sun": 1.0
    },
@@ -11815,7 +11815,7 @@
     "tmax": 44.0,
     "tmin": 20.0,
     "wind": 5.0,
-    "wdir": "SE",
+    "wdir": "S",
     "precip": "-",
     "sun": 9.0
    },
@@ -11889,7 +11889,7 @@
     "tmax": 30.0,
     "tmin": 18.0,
     "wind": 8.0,
-    "wdir": "W",
+    "wdir": "SE",
     "precip": "-",
     "sun": 10.0
    },
@@ -11937,7 +11937,7 @@
     "tmax": 38.0,
     "tmin": 23.0,
     "wind": 9.0,
-    "wdir": "SW",
+    "wdir": "W",
     "precip": "-",
     "sun": 10.0
    },
@@ -12117,19 +12117,19 @@
     "date": "2026-11-16",
     "wd": "Mon",
     "day": "Mostly cloudy",
-    "night": "Overcast",
+    "night": "Overcast with occasional rain",
     "tmax": 64.0,
     "tmin": 55.0,
     "wind": 7.0,
     "wdir": "NE",
-    "precip": "-",
+    "precip": "0-0.1\"",
     "sun": 2.0
    },
    {
     "date": "2026-11-17",
     "wd": "Tue",
     "day": "Overcast with rain",
-    "night": "Overcast with occasional rain",
+    "night": "Overcast with rain",
     "tmax": 59.0,
     "tmin": 55.0,
     "wind": 6.0,
@@ -12361,7 +12361,7 @@
     "date": "2026-11-17",
     "wd": "Tue",
     "day": "Mostly cloudy with occasional snow",
-    "night": "Mostly cloudy with occasional snow",
+    "night": "Partly cloudy",
     "tmax": 27.0,
     "tmin": 15.0,
     "wind": 16.0,
@@ -12463,7 +12463,7 @@
     "tmax": 35.0,
     "tmin": 20.0,
     "wind": 7.0,
-    "wdir": "W",
+    "wdir": "SE",
     "precip": "-",
     "sun": 2.0
    },
@@ -12546,7 +12546,7 @@
     "night": "Partly cloudy",
     "tmax": 35.0,
     "tmin": 14.0,
-    "wind": 9.0,
+    "wind": 10.0,
     "wdir": "W",
     "precip": "-",
     "sun": 9.0
@@ -13452,7 +13452,7 @@
     "tmin": 22.0,
     "wind": 9.0,
     "wdir": "N",
-    "precip": "2-4\"",
+    "precip": "0.8-2\"",
     "sun": 0.0
    },
    {
@@ -13523,7 +13523,7 @@
     "tmax": 36.0,
     "tmin": 19.0,
     "wind": 4.0,
-    "wdir": "NW",
+    "wdir": "N",
     "precip": "-",
     "sun": 7.0
    },
@@ -13546,7 +13546,7 @@
     "night": "Clear and few clouds",
     "tmax": 35.0,
     "tmin": 18.0,
-    "wind": 11.0,
+    "wind": 10.0,
     "wdir": "NW",
     "precip": "-",
     "sun": 8.0
@@ -13683,7 +13683,7 @@
     "tmax": 61.0,
     "tmin": 58.0,
     "wind": 3.0,
-    "wdir": "W",
+    "wdir": "N",
     "precip": "0-0.1\"",
     "sun": 0.0
    },
@@ -13726,13 +13726,13 @@
    {
     "date": "2026-11-19",
     "wd": "Thu",
-    "day": "Overcast",
+    "day": "Overcast with occasional rain",
     "night": "Overcast",
     "tmax": 56.0,
     "tmin": 51.0,
     "wind": 4.0,
     "wdir": "N",
-    "precip": "-",
+    "precip": "0-0.1\"",
     "sun": 0.0
    },
    {
@@ -14085,7 +14085,7 @@
     "tmax": 40.0,
     "tmin": 23.0,
     "wind": 10.0,
-    "wdir": "N",
+    "wdir": "NE",
     "precip": "0-0.8\"",
     "sun": 3.0
    },
@@ -14132,7 +14132,7 @@
     "night": "Clear and few clouds",
     "tmax": 42.0,
     "tmin": 22.0,
-    "wind": 6.0,
+    "wind": 7.0,
     "wdir": "W",
     "precip": "-",
     "sun": 9.0
@@ -14439,7 +14439,7 @@
     "tmax": 63.0,
     "tmin": 56.0,
     "wind": 7.0,
-    "wdir": "S",
+    "wdir": "SW",
     "precip": "0.2-0.4\"",
     "sun": 1.0
    },
@@ -14659,7 +14659,7 @@
     "tmax": 39.0,
     "tmin": 28.0,
     "wind": 4.0,
-    "wdir": "NE",
+    "wdir": "N",
     "precip": "-",
     "sun": 8.0
    },
@@ -14754,8 +14754,8 @@
     "night": "Partly cloudy",
     "tmax": 39.0,
     "tmin": 29.0,
-    "wind": 3.0,
-    "wdir": "NE",
+    "wind": 2.0,
+    "wdir": "N",
     "precip": "-",
     "sun": 0.0
    },
@@ -14776,13 +14776,13 @@
    {
     "date": "2026-11-15",
     "wd": "Sun",
-    "day": "Mostly cloudy",
+    "day": "Mostly cloudy with occasional rain",
     "night": "Clear and few clouds",
     "tmax": 45.0,
     "tmin": 31.0,
     "wind": 18.0,
     "wdir": "SE",
-    "precip": "-",
+    "precip": "0-0.1\"",
     "sun": 2.0
    },
    {
@@ -14903,7 +14903,7 @@
     "tmax": 41.0,
     "tmin": 22.0,
     "wind": 9.0,
-    "wdir": "E",
+    "wdir": "W",
     "precip": "-",
     "sun": 2.0
    },
@@ -14915,7 +14915,7 @@
     "tmax": 43.0,
     "tmin": 23.0,
     "wind": 9.0,
-    "wdir": "W",
+    "wdir": "NW",
     "precip": "-",
     "sun": 9.0
    },
@@ -15120,7 +15120,7 @@
     "night": "Clear, cloudless sky",
     "tmax": 47.0,
     "tmin": 34.0,
-    "wind": 6.0,
+    "wind": 5.0,
     "wdir": "NE",
     "precip": "-",
     "sun": 7.0
@@ -15184,7 +15184,7 @@
     "tmin": 47.0,
     "wind": 9.0,
     "wdir": "NE",
-    "precip": "0.2-0.4\"",
+    "precip": "0.1-0.2\"",
     "sun": 0.0
    },
    {
@@ -15288,7 +15288,7 @@
    {
     "date": "2026-11-16",
     "wd": "Mon",
-    "day": "Overcast with occasional rain",
+    "day": "Overcast with rain",
     "night": "Overcast with rain",
     "tmax": 50.0,
     "tmin": 45.0,
@@ -15525,7 +15525,7 @@
     "tmax": 57.0,
     "tmin": 53.0,
     "wind": 3.0,
-    "wdir": "S",
+    "wdir": "W",
     "precip": "0.1-0.2\"",
     "sun": 0.0
    },
@@ -15635,7 +15635,7 @@
     "tmax": 53.0,
     "tmin": 48.0,
     "wind": 3.0,
-    "wdir": "E",
+    "wdir": "SE",
     "precip": "0-0.1\"",
     "sun": 3.0
    },
@@ -15659,7 +15659,7 @@
     "tmax": 50.0,
     "tmin": 46.0,
     "wind": 5.0,
-    "wdir": "S",
+    "wdir": "SE",
     "precip": "0-0.1\"",
     "sun": 0.0
    },
@@ -15718,7 +15718,7 @@
     "night": "Overcast",
     "tmax": 50.0,
     "tmin": 40.0,
-    "wind": 4.0,
+    "wind": 5.0,
     "wdir": "NW",
     "precip": "-",
     "sun": 8.0
@@ -15769,7 +15769,7 @@
     "tmax": 50.0,
     "tmin": 41.0,
     "wind": 3.0,
-    "wdir": "E",
+    "wdir": "N",
     "precip": "0-0.1\"",
     "sun": 1.0
    },
@@ -15781,7 +15781,7 @@
     "tmax": 46.0,
     "tmin": 39.0,
     "wind": 5.0,
-    "wdir": "N",
+    "wdir": "E",
     "precip": "0-0.1\"",
     "sun": 0.0
    },
@@ -16002,7 +16002,7 @@
     "tmin": 48.0,
     "wind": 4.0,
     "wdir": "N",
-    "precip": "0.1-0.2\"",
+    "precip": "0-0.1\"",
     "sun": null
    },
    {
@@ -16135,7 +16135,7 @@
     "tmax": 65.0,
     "tmin": 57.0,
     "wind": 6.0,
-    "wdir": "NE",
+    "wdir": "E",
     "precip": "-",
     "sun": 1.0
    },
@@ -16155,7 +16155,7 @@
     "date": "2026-11-17",
     "wd": "Tue",
     "day": "Overcast with rain",
-    "night": "Overcast with occasional rain",
+    "night": "Overcast with rain",
     "tmax": 56.0,
     "tmin": 53.0,
     "wind": 6.0,
@@ -16207,7 +16207,7 @@
     "tmax": 60.0,
     "tmin": 42.0,
     "wind": 6.0,
-    "wdir": "SW",
+    "wdir": "S",
     "precip": "-",
     "sun": 10.0
    },
@@ -16270,7 +16270,7 @@
     "tmin": 59.0,
     "wind": 7.0,
     "wdir": "E",
-    "precip": "-",
+    "precip": "0-0.1\"",
     "sun": 1.0
    },
    {
@@ -16573,7 +16573,7 @@
     "tmax": 38.0,
     "tmin": 21.0,
     "wind": 6.0,
-    "wdir": "NW",
+    "wdir": "W",
     "precip": "-",
     "sun": 8.0
    },
@@ -16862,25 +16862,25 @@
    {
     "date": "2026-11-16",
     "wd": "Mon",
-    "day": "Mostly cloudy with a mixture of snow and rain",
+    "day": "Mostly cloudy with occasional snow",
     "night": "Mostly cloudy with occasional snow",
     "tmax": 36.0,
     "tmin": 18.0,
     "wind": 20.0,
     "wdir": "W",
-    "precip": "0-0.1\"",
+    "precip": "0-0.8\"",
     "sun": 2.0
    },
    {
     "date": "2026-11-17",
     "wd": "Tue",
-    "day": "Mostly cloudy",
+    "day": "Mostly cloudy with occasional snow",
     "night": "Mostly cloudy",
     "tmax": 35.0,
     "tmin": 20.0,
     "wind": 7.0,
-    "wdir": "W",
-    "precip": "-",
+    "wdir": "NW",
+    "precip": "0-0.8\"",
     "sun": 1.0
    },
    {
@@ -16963,7 +16963,7 @@
     "tmax": 30.0,
     "tmin": 17.0,
     "wind": 14.0,
-    "wdir": "NW",
+    "wdir": "W",
     "precip": "-",
     "sun": 0.0
    }
