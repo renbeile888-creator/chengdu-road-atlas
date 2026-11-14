@@ -25,6 +25,7 @@ concurrency:
 
 env:
   TZ: Asia/Shanghai
+  CD_MIN_INTERVAL: '0.9'
 
 jobs:
   refresh-and-deploy:
@@ -43,10 +44,10 @@ jobs:
 
       - name: Refresh 10-day forecast
         run: |
-          python3 tools/update.py --force || {
+          python3 tools/update.py --force --jobs 2 || {
             echo '首次抓取未达标，等待 60 秒后重试一次'
             sleep 60
-            python3 tools/update.py --force
+            python3 tools/update.py --force --jobs 2
           }
 
       - name: Copy dataset into publish root

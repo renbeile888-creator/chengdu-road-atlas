@@ -14,8 +14,11 @@ meteoblue 10 日天气预报抓取器（零第三方依赖，只用 Python 标�
 """
 import gzip
 import io
+import os
+import random
 import re
 import ssl
+import threading
 import time
 import urllib.request
 import urllib.error
@@ -24,6 +27,22 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/122.0 Safari/537.36")
 
 WEEK_URL = "https://www.meteoblue.com/en/weather/week/%.3f%s%.3f%s"
+
+# 云端 CI 的出口 IP 更容易撞上 meteoblue 速率限制：CD_MIN_INTERVAL 给所有请求
+# 加一个全局最小间隔（本机默认 0，行为不变），429 再单独做长退避。
+MIN_INTERVAL = float(os.environ.get("CD_MIN_INTERVAL", "0") or 0)
+_rate_lock = threading.Lock()
+_last_request = [0.0]
+
+
+def _throttle():
+    if MIN_INTERVAL <= 0:
+        return
+    with _rate_lock:
+        wait = _last_request[0] + MIN_INTERVAL - time.monotonic()
+        if wait > 0:
+            time.sleep(wait)
+        _last_request[0] = time.monotonic()
 
 
 def url_for(lat, lon):
@@ -44,10 +63,11 @@ def _clean(s):
     return re.sub(r"\s+", " ", s).strip()
 
 
-def http_get(url, timeout=30, retries=3, backoff=1.5):
-    """带重试的 GET，返回 str；失败抛最后一次异常。"""
+def http_get(url, timeout=30, retries=4, backoff=1.5):
+    """带节流与重试的 GET，返回 str；失败抛最后一次异常。"""
     last = None
     for i in range(retries):
+        _throttle()
         try:
             req = urllib.request.Request(url, headers={
                 "User-Agent": UA,
@@ -62,6 +82,12 @@ def http_get(url, timeout=30, retries=3, backoff=1.5):
                 if r.headers.get("Content-Encoding") == "gzip":
                     raw = gzip.GzipFile(fileobj=io.BytesIO(raw)).read()
                 return raw.decode("utf-8", "ignore")
+        except urllib.error.HTTPError as e:
+            last = e
+            if i < retries - 1:
+                # 429 是速率限制；短退避会让并发线程一起再撞一次限流
+                time.sleep((6 + i * 6 + random.random() * 2) if e.code == 429
+                           else (backoff + i * 1.2))
         except Exception as e:  # noqa: BLE001
             last = e
             if i < retries - 1:
