@@ -862,15 +862,14 @@
         "<small>" + catN[c.key] + "</small></button>").join("") + "</div>";
 
     html += '<p class="rl-status">' + status + "</p>";
-    html += '<div class="rl-list">' + (focusMode
-      ? (list.length
+    html += focusMode
+      ? '<div class="rl-list">' + (list.length
         ? list.slice().sort((a, b) => a.km - b.km).map((d) =>
           '<button class="rl-row" data-rid="' + d.id + '"><i style="background:' + catColor(d.cat) + '"></i>' +
           '<span class="rl-row__name">' + esc(d.name) + "</span>" +
           '<span class="rl-row__km">' + fmt(d.km) + " km</span></button>").join("")
-        : '<p class="rl-empty">这一段没有该风光的目的地，换个圈层或风光试试。</p>')
-      : '<p class="rl-empty">默认把 ' + DEST.length + ' 处全画成小圆点，不写名字避免叠在一起。<br>' +
-        '点图上的同心圈或上方任一档，只亮起那一段；也可以再按风光收窄。右侧清单可直接点开详情。</p>') + "</div>";
+        : '<p class="rl-empty">这一段没有该风光的目的地，换个圈层或风光试试。</p>') + "</div>"
+      : "";
     $("#radialLegend").innerHTML = html;
   }
 
