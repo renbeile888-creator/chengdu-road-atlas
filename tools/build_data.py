@@ -34,6 +34,20 @@ def trip_bucket(km):
     return {"key": "long", "name": "深度长线", "hint": "7 天以上"}
 
 
+def climb_bucket(days):
+    """雪山攀登卷按「攀登周期」分档，而不是按进山车程。
+
+    同一座山可能开车 220 公里却要 3 天，用里程分档会让「周末可达」名不副实。
+    """
+    if days <= 2:
+        return {"key": "weekend", "name": "周末可达", "hint": "2 天 1 晚"}
+    if days <= 5:
+        return {"key": "short", "name": "小长假", "hint": "3—5 天"}
+    if days <= 7:
+        return {"key": "mid", "name": "长假远征", "hint": "6—7 天"}
+    return {"key": "long", "name": "深度长线", "hint": "7 天以上"}
+
+
 _raw = json.load(open(os.path.join(ROOT, "data", "weather.json"), encoding="utf-8"))
 if isinstance(_raw, dict) and "points" in _raw:
     weather = _raw.get("points") or {}
@@ -63,7 +77,8 @@ for d in DEST:
     # 出发满电；按高速可用续航折算，单程中途需要补电的次数
     item["chargeStops"] = max(0, math.ceil(d["km"] / USABLE_RANGE_KM) - 1)
     item["bearing"] = round(bearing(d["lat"], d["lon"]), 1)
-    item["trip"] = trip_bucket(d["km"])
+    # 雪山攀登卷不比车程与路费，行程按攀登周期分档；其余各卷仍按里程分档
+    item["trip"] = climb_bucket(d.get("climbDays") or d["days"]) if d["cat"] == "climb" else trip_bucket(d["km"])
     item["cost"] = d["toll"] + item["energy"]
     item["weather"] = future_only(weather.get(d["id"]) or [])
     out.append(item)

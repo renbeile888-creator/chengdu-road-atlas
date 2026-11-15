@@ -105,6 +105,10 @@
     hike: [
       { sky: ["#E6EFE8", "#FAF8EF"], far: "#9FBBA6", mid: "#628A72", near: "#2E5B49", sun: "#D9965B", water: "#BFD8CE", hi: "#F7F4E6" },
       { sky: ["#F1EBDC", "#FBF6EA"], far: "#C4B294", mid: "#8E8B5B", near: "#3F5A3E", sun: "#C97A48", water: "#D8D6BC", hi: "#FBF4E2" }
+    ],
+    climb: [
+      { sky: ["#DEE7EF", "#F7FAFB"], far: "#AFBECC", mid: "#7C8EA3", near: "#3E4E63", sun: "#DFA96E", water: "#F1F6F9", hi: "#FFFFFF" },
+      { sky: ["#E6E3EC", "#F8F5F3"], far: "#B5B6C5", mid: "#868F9E", near: "#414A5A", sun: "#D99A6C", water: "#F4F5F7", hi: "#FFFFFF" }
     ]
   };
 
@@ -192,6 +196,30 @@
       const tx = v === 2 ? [30, 70, 340] : [44, 76, 330, 356];
       tx.forEach((x, i) => { inner += tree(x, 124 + (i % 2) * 3, 13 + (i % 3) * 5, p.near); });
       if (deco === 2) inner += '<g fill="' + p.hi + '" opacity=".7"><circle cx="90" cy="22" r="1"/><circle cx="130" cy="34" r="1"/><circle cx="168" cy="18" r="1"/></g>';
+    } else if (cat === "climb") {
+      // 冰壁 + 路绳 + 结组攀登者：与「雪山」的远峰剪影区分开
+      const peakX = 196 + v * 44;
+      const pts = [[peakX + 22, 118], [peakX + 38, 94], [peakX + 50, 68], [peakX + 58, 42]];
+      const climber = (x, y, s) => '<g fill="' + p.near + '" opacity=".95" transform="translate(' + x + ',' + y + ') scale(' + s + ')">' +
+        '<circle cx="0" cy="-9" r="2.6"/>' +
+        '<path d="M-2.6 -6 h5.2 l1.5 8.5 h-8.2Z"/>' +
+        '<path d="M-2 -2 l-3.2 7.4 h2.8 l2.2 -5.4Z"/>' +
+        '<path d="M2 -2 l3.6 7.4 h-3 l-2.6 -5.4Z"/>' +
+        '<rect x="-4.6" y="-5.4" width="2.8" height="5" rx=".9"/></g>';
+      inner = '<g fill="' + p.hi + '" opacity=".55">' +
+        '<ellipse cx="' + (56 + deco * 12) + '" cy="26" rx="30" ry="7"/>' +
+        '<ellipse cx="' + (300 - deco * 10) + '" cy="36" rx="22" ry="6"/></g>' +
+        hill('M0 94 L62 62 L130 86 L198 48 L268 84 L338 56 L400 82', p.far, .58) +
+        '<path d="M' + peakX + ' 132 L' + (peakX + 46) + ' 18 L' + (peakX + 152) + ' 132Z" fill="' + p.mid + '"/>' +
+        '<path d="M' + (peakX + 46) + ' 18 L' + (peakX + 70) + ' 52 L' + (peakX + 58) + ' 46 L' +
+        (peakX + 46) + ' 62 L' + (peakX + 34) + ' 48 L' + (peakX + 22) + ' 54Z" fill="' + p.hi + '" opacity=".92"/>' +
+        '<path d="M' + peakX + ' 132 Q' + (peakX + 34) + ' 74 ' + (peakX + 46) + ' 20" fill="none" stroke="' + p.hi + '" stroke-width="1.4" opacity=".38"/>' +
+        '<path d="M' + pts.map((q) => q[0] + " " + q[1]).join(" L") + '" fill="none" stroke="' + p.hi + '" stroke-width="1.6" opacity=".85"/>' +
+        hill('M0 132 L0 116 Q118 102 232 120 T400 110 L400 132Z', p.near, .92) +
+        climber(pts[3][0], pts[3][1], .8) + climber(pts[2][0], pts[2][1], .92) +
+        (v === 2 ? climber(pts[1][0], pts[1][1], 1) : "") +
+        '<g fill="' + p.sun + '"><circle cx="' + pts[0][0] + '" cy="' + pts[0][1] + '" r="1.6"/></g>';
+      if (deco % 2 === 1) inner += birds(64, 40, 2);
     } else if (cat === "sea") {
       inner = sun(v !== 2) +
         '<rect y="86" width="400" height="46" fill="' + p.mid + '"/>' +
@@ -365,7 +393,7 @@
     $("#sort").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
   }
 
-  const catColor = (k) => ({ lake: "#1F5C86", snow: "#5B7C9B", sea: "#0E6E73", grass: "#55702F", canyon: "#8A5323", town: "#7B4A5C", desert: "#B08226", pet: "#C1663B", hike: "#2E6B58" }[k] || "#1B211C");
+  const catColor = (k) => ({ lake: "#1F5C86", snow: "#5B7C9B", sea: "#0E6E73", grass: "#55702F", canyon: "#8A5323", town: "#7B4A5C", desert: "#B08226", pet: "#C1663B", hike: "#2E6B58", climb: "#3F4B66" }[k] || "#1B211C");
 
   /* ---------------- 日期对齐 ----------------
      meteoblue 的十日预报常按 UTC 排期：成都时间凌晨抓取时，起始日仍是前一天。
@@ -396,7 +424,8 @@
     days: 5,                        // 从今天起评估的出发窗口（含今天）
     decay: 0.8,                     // 逐日权重按 0.8 等比衰减：1 / 0.8 / 0.64 / 0.51 / 0.41
     kind: { sun: 1, partly: 0.9, cloud: 0.68, overcast: 0.55, fog: 0.42, rain: 0.24, snow: 0.32, storm: 0.08 },
-    kmHalf: 700, costHalf: 500      // 半饱和常数：达到该值时「轻松度」用掉一半预算
+    kmHalf: 700, costHalf: 500,      // 半饱和常数：达到该值时「轻松度」用掉一半预算
+    gainHalf: 1400, dayHalf: 6       // 攀登卷同理：累计爬升 1400 米、周期 6 天各用掉一半
   };
   const clamp01 = (x) => Math.max(0, Math.min(1, x));
   const DAY_CN = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
@@ -465,12 +494,17 @@
     return { score: clamp01(sum / wsum), days: future.length };
   }
 
-  /** 里程 62% + 单程交通成本 38%；半饱和曲线让 500 km 属「适中」、3000 km 才是长线。 */
-  const easeScore = (d) => clamp01(
-    1 - 0.62 * (d.km / (d.km + REC.kmHalf))
-      - 0.38 * (d.cost / (d.cost + REC.costHalf)));
+  /** 普通卷：里程 62% + 单程交通成本 38%；攀登卷不比路费，改看累计爬升与攀登周期。 */
+  const easeScore = (d) => d.cat === "climb"
+    ? clamp01(
+        1 - 0.62 * (d.gain / (d.gain + REC.gainHalf))
+          - 0.38 * (d.climbDays / (d.climbDays + REC.dayHalf)))
+    : clamp01(
+        1 - 0.62 * (d.km / (d.km + REC.kmHalf))
+          - 0.38 * (d.cost / (d.cost + REC.costHalf)));
 
-  function recReason(p, wxr) {
+  function recReason(p, wxr, d) {
+    const climb = d && d.cat === "climb";
     const r = [];
     if (p.season >= 0.99) r.push("正当时");
     else if (p.season <= 0.36) r.push("非最佳季");
@@ -478,8 +512,8 @@
     else if (p.weather >= 0.78) r.push("近" + (DAY_CN[wxr.days] || wxr.days) + "日晴好");
     else if (p.weather <= 0.42) r.push("近期有雨雪");
     if (p.quality >= 0.9) r.push("五星景致");
-    if (p.ease >= 0.72) r.push("近程轻松");
-    else if (p.ease <= 0.28) r.push("长线规划");
+    if (p.ease >= 0.72) r.push(climb ? "强度温和" : "近程轻松");
+    else if (p.ease <= 0.28) r.push(climb ? "高强度周期" : "长线规划");
     return r.slice(0, 3).join(" · ") || "均衡之选";
   }
 
@@ -494,7 +528,7 @@
       parts: parts,
       hasWx: wxr.days > 0,
       window: wxr.days,
-      reason: recReason(parts, wxr)
+      reason: recReason(parts, wxr, d)
     };
   }
   function refreshRec() { DEST.forEach((d) => { d._rec = recScore(d); }); }
@@ -510,11 +544,14 @@
   function recSection(d) {
     const r = d._rec || recScore(d);
     const pct = (x) => Math.round(x * 100);
+    const climb = d.cat === "climb";
     const rows = [
       { k: "景致质量", w: 30, v: pct(r.parts.quality), note: d.rating + ".0 ★" },
       { k: "当季适配", w: 20, v: pct(r.parts.season), note: r.parts.season >= 0.99 ? "正当时" : r.parts.season >= 0.7 ? "全年可去" : r.parts.season >= 0.59 ? "季节待核" : r.parts.season >= 0.49 ? "临界月" : "非最佳季" },
       { k: "近" + (DAY_CN[REC.days] || REC.days) + "日天气", w: 30, v: pct(r.parts.weather), note: !r.hasWx ? "暂无预报" : r.parts.weather >= 0.78 ? "适宜出行" : r.parts.weather <= 0.42 ? "有雨雪" : "一般" },
-      { k: "里程与花费", w: 20, v: pct(r.parts.ease), note: r.parts.ease >= 0.72 ? "近程轻松" : r.parts.ease <= 0.28 ? "长线规划" : "适中" }
+      climb
+        ? { k: "爬升与用时", w: 20, v: pct(r.parts.ease), note: r.parts.ease >= 0.72 ? "强度温和" : r.parts.ease <= 0.28 ? "高强度周期" : "适中" }
+        : { k: "里程与花费", w: 20, v: pct(r.parts.ease), note: r.parts.ease >= 0.72 ? "近程轻松" : r.parts.ease <= 0.28 ? "长线规划" : "适中" }
     ];
     return '<div class="d-sec d-rec"><h4>综合推荐 · 现在去合不合适</h4>' +
       '<div class="d-rec__head"><b>' + r.score.toFixed(1) + '<small>/ 100</small></b><span>' + esc(r.reason) + "</span></div>" +
@@ -522,7 +559,9 @@
         '<div class="d-rec__row"><span>' + x.k + "<i>" + x.w + "%</i></span>" +
         '<em><i style="width:' + x.v + '%"></i></em><b>' + x.v + "</b><u>" + esc(x.note) + "</u></div>").join("") +
       "</div>" +
-      '<p class="d-rec__note">按景致 30% + 当季 20% + 未来 ' + REC.days + ' 天天气 30% + 里程与花费 20% 加权；' +
+      '<p class="d-rec__note">按景致 30% + 当季 20% + 未来 ' + REC.days + ' 天天气 30% + ' +
+      (climb ? "爬升与用时" : "里程与花费") + ' 20% 加权；' +
+      (climb ? "本卷不计车程与路费，强度项按累计爬升与攀登周期折算；" : "") +
       '天气从今天起按 ' + REC.decay + ' 等比衰减，每次筛选与每日数据更新后自动重算。' +
       (r.hasWx ? "本次实际采用近 " + r.window + " 天预报。" : "该目的地暂无可用预报，天气项按中性 50 分计。") + "</p></div>";
   }
@@ -551,15 +590,19 @@
       '<div class="card__tags">' + (d.tags || []).slice(0, 2).map((t) => "<span>" + esc(t) + "</span>").join("") +
       '<span class="card__score" title="' + esc(recTitle(rec)) + '"><em>推荐</em>' + rec.score.toFixed(1) + "</span></div>" +
       '<div class="card__figs">' +
-      '<div class="fig"><b>' + fmt(d.km) + "</b><span>公里</span></div>" +
-      '<div class="fig"><b>' + d.hrs + "</b><span>小时车程</span></div>" +
-      '<div class="fig"><b>¥' + d.toll + "</b><span>过路费</span></div>" +
+      (d.cat === "climb"
+        ? '<div class="fig"><b>' + fmt(d.gain) + "</b><span>米爬升</span></div>" +
+          '<div class="fig fig--txt"><b>' + esc(String(d.span).replace(/\s+/g, "")) + "</b><span>用时</span></div>" +
+          '<div class="fig"><b>' + fmt(d.summit) + "</b><span>顶峰海拔</span></div>"
+        : '<div class="fig"><b>' + fmt(d.km) + "</b><span>公里</span></div>" +
+          '<div class="fig"><b>' + d.hrs + "</b><span>小时车程</span></div>" +
+          '<div class="fig"><b>¥' + d.toll + "</b><span>过路费</span></div>") +
       "</div>" +
       '<div class="card__wx">' + icon(now[1], "wx-ico") +
       '<div class="wx-main"><b>' + (w ? Math.round(w.tmax) + "° / " + Math.round(w.tmin) + "°" : "暂无天气") + "</b><span>" +
       (w ? now[0] + " · " + (w.date === todayKey() ? "今日" : w.date.slice(5).replace("-", "/")) : "待更新") + "</span></div>" +
       '<div class="wx-strip">' + strip + "</div></div>" +
-      '<div class="card__foot">查看路线与十日天气' +
+      '<div class="card__foot">' + (d.cat === "climb" ? "查看攀登数据与十日天气" : "查看路线与十日天气") +
       '<svg viewBox="0 0 20 20" width="13" height="13"><path d="M3 10h13M11 5l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></div>' +
       "</div></button>";
   }
@@ -589,10 +632,19 @@
     const list = filtered();
     $("#grid").innerHTML = list.map(cardHTML).join("");
     $("#resultCount").textContent = list.length + " 个目的地";
-    const km = list.reduce((s, d) => s + d.km, 0);
-    $("#resultHint").textContent = list.length
-      ? "里程均值 " + fmt(Math.round(km / list.length)) + " 公里 · 过路费均值 ¥" + Math.round(list.reduce((s, d) => s + d.toll, 0) / list.length)
-      : "";
+    if (!list.length) {
+      $("#resultHint").textContent = "";
+    } else if (list.every((d) => d.cat === "climb")) {
+      // 攀登卷不比车程与路费，结果栏改报爬升与周期
+      const gain = Math.round(list.reduce((s, d) => s + d.gain, 0) / list.length);
+      const ds = list.map((d) => d.climbDays);
+      $("#resultHint").textContent = "爬升均值 " + fmt(gain) + " 米 · 周期 " +
+        Math.min.apply(null, ds) + "—" + Math.max.apply(null, ds) + " 天";
+    } else {
+      const km = list.reduce((s, d) => s + d.km, 0);
+      $("#resultHint").textContent = "里程均值 " + fmt(Math.round(km / list.length)) + " 公里 · 过路费均值 ¥" +
+        Math.round(list.reduce((s, d) => s + d.toll, 0) / list.length);
+    }
     $("#empty").hidden = list.length > 0;
     // 进场动画只在首次浏览时出现；筛选切换时重播会干扰快速操作
     if (!state.mounted) { observeCards(); state.mounted = true; }
@@ -647,17 +699,24 @@
       '<div class="d-hero">' + sceneFor(d) + "</div>" +
       '<div class="d-intro">' +
       '<h2 class="d-title">' + esc(d.name) + "</h2>" +
-      '<p class="d-sub">' + esc(d.sub) + " · 海拔 " + fmt(d.alt) + " 米</p>" +
+      '<p class="d-sub">' + esc(d.sub) + (d.cat === "climb" ? " · 顶峰 " + fmt(d.summit) + " 米" : " · 海拔 " + fmt(d.alt) + " 米") + "</p>" +
       '<div class="d-badges">' +
       '<span class="badge badge--star"><em>' + "★".repeat(d.rating) + "☆".repeat(5 - d.rating) + "</em>" + d.rating + ".0</span>" +
       d.tags.map((t) => '<span class="badge">' + esc(t) + "</span>").join("") +
-      '<span class="badge">建议 ' + d.days + " 天</span>" +
+      (d.cat === "climb"
+        ? '<span class="badge">' + esc(d.span) + "</span>"
+        : '<span class="badge">建议 ' + d.days + " 天</span>") +
       "</div>" +
       '<div class="d-meta">' +
-      meta("单程里程", fmt(d.km), "km") + meta("车程", d.hrs, "小时") +
-      meta("过路费", "¥" + d.toll) + meta("电费约", "¥" + d.energy) +
-      meta("门票", ticketShort(d)) + meta("海拔", fmt(d.alt), "m") +
-      meta("最佳季节", d.season.split("，")[0]) + meta("行程", d.trip.hint) +
+      (d.cat === "climb"
+        ? meta("单程里程", fmt(d.km), "km") + meta("车程", d.hrs, "小时") +
+          meta("顶峰海拔", fmt(d.summit), "m") + meta("累计爬升", fmt(d.gain), "m") +
+          meta("徒步往返", d.trek, "km") + meta("建议用时", d.span) +
+          meta("难度", d.grade.split(" · ")[0]) + meta("最佳季节", d.season.split("，")[0])
+        : meta("单程里程", fmt(d.km), "km") + meta("车程", d.hrs, "小时") +
+          meta("过路费", "¥" + d.toll) + meta("电费约", "¥" + d.energy) +
+          meta("门票", ticketShort(d)) + meta("海拔", fmt(d.alt), "m") +
+          meta("最佳季节", d.season.split("，")[0]) + meta("行程", d.trip.hint)) +
       "</div></div>" +
 
       recSection(d) +
@@ -671,17 +730,23 @@
       '<div class="d-wx__rows">' + wRows + "</div>" +
       '<div class="d-wx__note">格内为当日最高 / 最低气温，蓝色数字为降水量。' +
       (today ? (today.date === tKey ? "今日" : today.date.slice(5).replace("-", "/")) + "：" + wx(today.day)[0] + "，风 " + today.wind + " km/h " + (today.wdir || "") + (today.sun != null ? "，日照 " + today.sun + " 小时" : "") + "。" : "该目的地暂无天气数据，运行一次天气更新即可补齐。") +
+      (d.cat === "climb" ? "预报点为进山村 / 山脚，峰顶气温约再低 15—20 ℃、风力更大，冲顶窗口以当日实测与向导判断为准。" : "") +
       "数据源 meteoblue，远期预报误差较大。</div></div>" +
 
       '<div class="d-sec"><h4>实用贴士</h4><ul class="d-tips">' + d.tips.map((t) => "<li>" + esc(t) + "</li>").join("") + "</ul></div>" +
 
-      '<div class="d-cost"><div><span>单程交通成本（过路 + 电）· ' +
-      (d.chargeStops ? "建议补电 " + d.chargeStops + " 次" : "无需中途补电") + '</span><br><b>¥' + fmt(d.cost) + '</b></div>' +
-      '<span style="text-align:right">往返交通约 ¥' + fmt(d.cost * 2) + "<br>不含门票、食宿</span></div>" +
+      (d.cat === "climb"
+        ? '<div class="d-sec d-permit"><h4>许可与备案</h4><p class="d-text">' + esc(d.permit) + "</p></div>"
+        : '<div class="d-cost"><div><span>单程交通成本（过路 + 电）· ' +
+          (d.chargeStops ? "建议补电 " + d.chargeStops + " 次" : "无需中途补电") + '</span><br><b>¥' + fmt(d.cost) + '</b></div>' +
+          '<span style="text-align:right">往返交通约 ¥' + fmt(d.cost * 2) + "<br>不含门票、食宿</span></div>") +
 
       '<div class="d-rel"><h4>同类风光</h4><div class="rel-list">' +
-      DEST.filter((x) => x.cat === d.cat && x.id !== d.id).sort((a, b) => a.km - b.km).slice(0, 4).map((x) =>
-        '<button class="rel" data-rel="' + x.id + '"><b>' + esc(x.name) + "</b><span>" + x.km + " km · " + esc(x.sub.split("·")[1] || x.sub) + "</span></button>"
+      DEST.filter((x) => x.cat === d.cat && x.id !== d.id)
+        .sort((a, b) => (d.cat === "climb" ? a.alt - b.alt : a.km - b.km)).slice(0, 4).map((x) =>
+        '<button class="rel" data-rel="' + x.id + '"><b>' + esc(x.name) + "</b><span>" +
+        (d.cat === "climb" ? "爬升 " + fmt(x.gain) + " m · " + esc(x.span) : x.km + " km · " + esc(x.sub.split("·")[1] || x.sub)) +
+        "</span></button>"
       ).join("") + "</div></div>";
 
     $("#dBody").scrollTop = 0;

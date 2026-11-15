@@ -307,6 +307,8 @@ section[id]{scroll-margin-top:74px}
 }
 .fig b{font-family:var(--serif);font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em;line-height:1.1}
 .fig span{font-size:9.5px;color:var(--ink-3);letter-spacing:.06em;white-space:nowrap}
+/* 「3天2晚」这类用时字段比数字宽，单独收小一号保持与左右基线对齐 */
+.fig--txt b{font-size:13px;letter-spacing:0;white-space:nowrap}
 .card__wx{
   display:flex;align-items:center;gap:9px;margin-top:auto;
   padding:9px 0;border-top:1px solid var(--line);
