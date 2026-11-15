@@ -1,6 +1,6 @@
 # 每天在云端重抓 154 个坐标点的十日预报，重建 dataset.js 并发布到 GitHub Pages。
-# 每天三次，schedule 用 UTC：0 时 = 北京 08:00，7 时 = 北京 15:00，14 时 = 北京 22:00。
-# （UTC+8，故北京的 08/15/22 点分别对应 UTC 的 00/07/14 点。）
+# 每天三次，schedule 用 UTC：0 时 = 北京 08:07，7 时 = 北京 15:07，14 时 = 北京 22:07。
+# （UTC+8，故北京的 08/15/22 点分别对应 UTC 的 00/07/14 点；分钟取 7 以避开整点拥堵。）
 # TZ 必须在 job 级设为 Asia/Shanghai，否则 update.py 里的 date.today() 会按 UTC 写
 # updated_date，比北京慢一天，前端会误判数据过期并弹出过期提示条。
 # 抓取只用 Python 标准库，无需 pip install；失败率超阈值时脚本自行放弃，
@@ -10,7 +10,8 @@ name: Refresh weather and deploy Pages
 
 on:
   schedule:
-    - cron: '0 0,7,14 * * *'
+    # 分钟避开整点：GitHub 明确提示「整点排期最拥挤，可能延迟或被丢弃」，故取 7 分。
+    - cron: '7 0,7,14 * * *'
   workflow_dispatch:
   push:
     branches: [main]
