@@ -350,8 +350,62 @@
 
   /* ---------------- 状态 ---------------- */
   const state = { cat: "all", trip: "all", sort: "rec", q: "", fav: new Set(), mounted: false,
-                  rBand: "all", rCat: "all" };  // rBand / rCat：方位距离图的圈层与风光聚焦
+                  rBand: "all", rCat: "all",   // rBand / rCat：方位距离图的圈层与风光聚焦
+                  pref: { temp: "", alt: "" } }; // pref：温度 / 海拔条件，取值 high / low / 空；同维度互斥、跨维度叠加
   try { state.fav = new Set(JSON.parse(localStorage.getItem("cdx-fav") || "[]")); } catch (e) { }
+
+  /* ---------------- 可叠加条件：温度高低 / 海拔高低 ----------------
+     四个开关分属 temp / alt 两个维度：同维度互斥，跨维度取交集（AND）。
+     阈值不写死，按当前数据集的三分位划线，随每日天气自动移动；
+     气温看今天起 5 天的最高气温均值，海拔取住宿 / 观景点（攀登卷取顶峰）。
+  ------------------------------------------------------------------- */
+  const PREF = { days: 5, qHi: 2 / 3, qLo: 1 / 3 };
+  const PREF_DEFS = [
+    { key: "tempHigh", dim: "temp", side: "high", name: "暖" },
+    { key: "tempLow",  dim: "temp", side: "low",  name: "冷" },
+    { key: "altHigh",  dim: "alt",  side: "high", name: "高海拔" },
+    { key: "altLow",   dim: "alt",  side: "low",  name: "低海拔" }
+  ];
+  let PREF_TH = null;
+
+  /** 已排序数组的分位数（线性插值），两端分别为最小值与最大值。 */
+  function quantile(sorted, p) {
+    if (!sorted.length) return null;
+    const i = (sorted.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (i - lo);
+  }
+  /** 今天起 5 天最高气温均值；整段数据都过期时退用最后 5 天，仍拿不到则返回 null。 */
+  function prefTemp(d) {
+    const wxs = d.weather || [];
+    if (!wxs.length) return null;
+    const ti = todayIndex(wxs);
+    if (ti < 0) return null;
+    let win = wxs.slice(ti).filter((x) => x.date >= todayKey()).slice(0, PREF.days);
+    if (!win.length) win = wxs.slice(-PREF.days);
+    if (!win.length || win.some((x) => !isFinite(x.tmax))) return null;
+    return win.reduce((s, x) => s + x.tmax, 0) / win.length;
+  }
+  const prefAlt = (d) => (d.cat === "climb" ? (d.summit != null ? d.summit : d.alt) : d.alt);
+
+  function buildPrefThresholds() {
+    if (PREF_TH) return;
+    const ts = DEST.map(prefTemp).filter((v) => v != null).sort((a, b) => a - b);
+    const as = DEST.map(prefAlt).filter((v) => v != null && isFinite(v)).sort((a, b) => a - b);
+    PREF_TH = {
+      tempHi: quantile(ts, PREF.qHi), tempLo: quantile(ts, PREF.qLo),
+      altHi: quantile(as, PREF.qHi), altLo: quantile(as, PREF.qLo)
+    };
+    DEST.forEach((d) => { d._prefTemp = prefTemp(d); d._prefAlt = prefAlt(d); });
+  }
+  function prefHit(d, dim, side) {
+    if (!PREF_TH) return false;
+    const v = dim === "temp" ? d._prefTemp : d._prefAlt;
+    if (v == null || !isFinite(v)) return false;
+    const hi = dim === "temp" ? PREF_TH.tempHi : PREF_TH.altHi;
+    const lo = dim === "temp" ? PREF_TH.tempLo : PREF_TH.altLo;
+    if (hi == null || lo == null) return false;
+    return side === "high" ? v >= hi : v <= lo;
+  }
 
   /* ---------------- 筛选器 ---------------- */
   function buildChips() {
@@ -391,6 +445,55 @@
     });
     $("#search").addEventListener("input", (e) => { state.q = e.target.value.trim(); render(); });
     $("#sort").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
+
+    buildPrefThresholds();
+    const th = PREF_TH;
+    const prefBox = $("#prefChips");
+    prefBox.innerHTML = PREF_DEFS.map((p, i) => {
+      const cut = p.dim === "temp"
+        ? (p.side === "high" ? " ≥ " + th.tempHi.toFixed(1) + " ℃" : " ≤ " + th.tempLo.toFixed(1) + " ℃")
+        : (p.side === "high" ? " ≥ " + fmt(Math.round(th.altHi)) + " m" : " ≤ " + fmt(Math.round(th.altLo)) + " m");
+      const rule = (p.dim === "temp" ? "未来 " + PREF.days + " 天最高气温均值" : "主要住宿 / 观景点海拔（攀登卷取顶峰）") + cut;
+      const n = DEST.filter((d) => prefHit(d, p.dim, p.side)).length;
+      const sep = i === 2 ? '<span class="chip-sep" aria-hidden="true"></span>' : "";
+      return sep + '<button class="chip" data-pref="' + p.key + '" aria-pressed="false" title="' +
+        esc(rule + " · " + n + " 处命中 · 同维度互斥，与另一维度叠加生效") + '">' +
+        p.name + '<span class="n">' + n + "</span></button>";
+    }).join("");
+    const prefNote = $("#prefNote");
+    if (prefNote) prefNote.textContent =
+      "暖 / 冷按未来 " + PREF.days + " 天最高气温均值，高 / 低海拔取主要住宿 / 观景点（攀登卷取顶峰）；" +
+      "阈值按当前全部目的地的前 / 后三分之一自动划线：" +
+      "暖 ≥ " + th.tempHi.toFixed(1) + " ℃、冷 ≤ " + th.tempLo.toFixed(1) + " ℃、" +
+      "高海拔 ≥ " + fmt(Math.round(th.altHi)) + " m、低海拔 ≤ " + fmt(Math.round(th.altLo)) + " m。" +
+      "同一维度只能选一个，暖 / 冷与高 / 低海拔可同时选中叠加；阈值随每日天气更新。";
+
+    prefBox.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-pref]"); if (!b) return;
+      const def = PREF_DEFS.find((p) => p.key === b.dataset.pref); if (!def) return;
+      state.pref[def.dim] = state.pref[def.dim] === def.side ? "" : def.side;
+      syncPrefChips();
+      render();
+    });
+    const reset = $("#prefReset");
+    if (reset) reset.addEventListener("click", () => {
+      state.pref.temp = ""; state.pref.alt = "";
+      syncPrefChips();
+      render();
+    });
+    syncPrefChips();
+  }
+
+  function syncPrefChips() {
+    $$("#prefChips .chip").forEach((b) => {
+      const def = PREF_DEFS.find((p) => p.key === b.dataset.pref);
+      if (!def) return;
+      const on = state.pref[def.dim] === def.side;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
+    const reset = $("#prefReset");
+    if (reset) reset.hidden = !(state.pref.temp || state.pref.alt);
   }
 
   const catColor = (k) => ({ lake: "#1F5C86", snow: "#5B7C9B", sea: "#0E6E73", grass: "#55702F", canyon: "#8A5323", town: "#7B4A5C", desert: "#B08226", pet: "#C1663B", hike: "#2E6B58", climb: "#3F4B66" }[k] || "#1B211C");
@@ -617,6 +720,9 @@
       list = list.filter((d) =>
         (d.name + d.sub + d.intro + d.tags.join("") + d.route + d.roads).toLowerCase().includes(q));
     }
+    // 可叠加条件：温度与海拔取交集；同维度在 state.pref 里已互斥
+    if (state.pref.temp) list = list.filter((d) => prefHit(d, "temp", state.pref.temp));
+    if (state.pref.alt) list = list.filter((d) => prefHit(d, "alt", state.pref.alt));
     const sorters = {
       rec: (a, b) => b._rec.score - a._rec.score || b.rating - a.rating || a.km - b.km,
       star: (a, b) => b.rating - a.rating || a.km - b.km,
@@ -644,6 +750,17 @@
       const km = list.reduce((s, d) => s + d.km, 0);
       $("#resultHint").textContent = "里程均值 " + fmt(Math.round(km / list.length)) + " 公里 · 过路费均值 ¥" +
         Math.round(list.reduce((s, d) => s + d.toll, 0) / list.length);
+    }
+    const act = $("#activePrefs");
+    if (act) {
+      const names = PREF_DEFS.filter((p) => state.pref[p.dim] === p.side).map((p) => p.name);
+      act.hidden = !names.length;
+      act.textContent = names.length ? "已叠加 · " + names.join(" + ") : "";
+    }
+    if (!list.length) {
+      $("#empty").textContent = (state.pref.temp || state.pref.alt)
+        ? "叠加的条件太紧，没有同时符合的目的地；取消一个条件或点「清除条件」再试。"
+        : "没有符合条件的路线，换个筛选试试。";
     }
     $("#empty").hidden = list.length > 0;
     // 进场动画只在首次浏览时出现；筛选切换时重播会干扰快速操作
